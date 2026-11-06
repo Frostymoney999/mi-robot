@@ -2,10 +2,15 @@ name: Robot de trading
 
 on:
   schedule:
-    - cron: "15 6 * * 1-5"      # informe premercado (07:15 Madrid en invierno)
-    - cron: "5 12,13,14 * * 1-5" # revisa señales H1 dentro de tu franja
-    - cron: "0 18 * * 0"        # domingo: reaprende con la semana nueva
-  workflow_dispatch: {}          # botón "Run workflow" para lanzarlo a mano
+    - cron: "7 * * * *"     # cada hora: el robot decide solo si toca informe, señales o nada (según tus ajustes)
+    - cron: "0 18 * * 0"    # domingo: reaprende con la semana nueva
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "auto = lo normal · aprender = reentrenar ya · informe = mandar informe ahora"
+        default: "informe"
+        type: choice
+        options: [informe, aprender, auto]
 
 permissions:
   contents: write
@@ -15,7 +20,7 @@ concurrency: robot
 jobs:
   robot:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     env:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -26,15 +31,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
       - run: pip install pandas numpy yfinance
       - name: Ejecutar robot
         run: |
-          if [ "${{ github.event.schedule }}" = "0 18 * * 0" ]; then
+          MODO="${{ github.event.inputs.modo }}"
+          if [ "${{ github.event.schedule }}" = "0 18 * * 0" ] || [ "$MODO" = "aprender" ]; then
             python robot.py aprender --sin-abrir --resumen
-          elif [ "${{ github.event.schedule }}" = "15 6 * * 1-5" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          elif [ "$MODO" = "informe" ]; then
             python robot.py todo --sin-abrir --resumen
           else
-            python robot.py todo --sin-abrir
+            python robot.py auto --sin-abrir
           fi
       - name: Guardar lo aprendido y publicar la app
         run: |
@@ -42,4 +49,5 @@ jobs:
           git config user.email "robot@users.noreply.github.com"
           git add memoria docs
           git diff --cached --quiet || git commit -m "Robot: actualización $(date -u +%F_%H:%M)"
+          git pull --rebase -q || true
           git push
