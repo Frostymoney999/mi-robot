@@ -1,0 +1,25 @@
+[
+  {
+    "activo": "BTCUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 50,
+      "entrada": "cruce",
+      "adx_min": 15,
+      "sl_atr": 1.0,
+      "tp_r": 1.5,
+      "sentido": "cortos",
+      "ruptura_n": 10,
+      "max_velas": 50,
+      "franja": false
+    },
+    "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'cruce'), ('franja', False), ('max_velas', 50), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-05 00:00:00",
+    "dir": "CORTO",
+    "entrada": 75942.125,
+    "sl": 78384.07400568684,
+    "tp": 72279.20149146975,
+    "dist_sl": 2441.949005686836
+  }
+]
