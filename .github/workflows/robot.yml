@@ -1,0 +1,45 @@
+name: Robot de trading
+
+on:
+  schedule:
+    - cron: "15 6 * * 1-5"      # informe premercado (07:15 Madrid en invierno)
+    - cron: "5 12,13,14 * * 1-5" # revisa señales H1 dentro de tu franja
+    - cron: "0 18 * * 0"        # domingo: reaprende con la semana nueva
+  workflow_dispatch: {}          # botón "Run workflow" para lanzarlo a mano
+
+permissions:
+  contents: write
+
+concurrency: robot
+
+jobs:
+  robot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      BALANCE: ${{ secrets.BALANCE }}
+      URL_WEB: ${{ vars.URL_WEB }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy yfinance
+      - name: Ejecutar robot
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 18 * * 0" ]; then
+            python robot.py aprender --sin-abrir --resumen
+          elif [ "${{ github.event.schedule }}" = "15 6 * * 1-5" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python robot.py todo --sin-abrir --resumen
+          else
+            python robot.py todo --sin-abrir
+          fi
+      - name: Guardar lo aprendido y publicar la app
+        run: |
+          git config user.name "robot"
+          git config user.email "robot@users.noreply.github.com"
+          git add memoria docs
+          git diff --cached --quiet || git commit -m "Robot: actualización $(date -u +%F_%H:%M)"
+          git push
