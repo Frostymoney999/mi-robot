@@ -85,7 +85,7 @@ def generar(ctx):
             est = "ok" if r["estado"] == "APROBADA" else "warn"
             o, mc = r["fuera_de_muestra"], r["monte_carlo"]
             h.append(f"<h3>Estrategia aprendida · {tf} <span class='tag {est}'>{r['estado']}</span></h3>")
-            h.append(f"<div class='card'>{html.escape(describir(r['params'], tf != 'D1'))}<br><span class='sub'>Actualizada {r['actualizado']} · {html.escape(r['motivo'])}</span></div>")
+            h.append(f"<div class='card'>{html.escape(describir(r['params'], tf == 'H1'))}<br><span class='sub'>Actualizada {r['actualizado']} · {html.escape(r['motivo'])}</span></div>")
             h.append("<table><tr><th></th><th>Trades</th><th>Esperanza</th><th>Acierto</th><th>Gana medio</th><th>Pierde medio</th><th>Profit factor</th><th>Máx. DD</th></tr>")
             for nom, m in [("Fuera de muestra (lo que cuenta)", o), ("Histórico completo", r["historico_completo"])]:
                 h.append(f"<tr><td>{nom}</td><td>{m['n']}</td><td class='{'ok' if m['esperanza'] > 0 else 'ko'}'>{m['esperanza']:+.3f}R</td>"
@@ -116,8 +116,8 @@ def generar(ctx):
     activos = ", ".join(a["nombre"] for a in ctx["activos"])
     h.append("<h2>Prompt premercado para Claude (noticias y calendario)</h2>")
     h.append("<pre>" + html.escape(
-        f"Actúa como mi analista premercado. Opero {activos}, intradía/swing, franja "
-        f"{config.FRANJA_UTC[0] if config.FRANJA_UTC else ''}-{config.FRANJA_UTC[1] if config.FRANJA_UTC else ''}h UTC, riesgo {config.RIESGO_POR_TRADE:.0%} por trade.\n"
+        f"Actúa como mi analista premercado. Opero {activos}, intradía/swing, horarios "
+        f"{', '.join(f'{a}-{b}h' for a, b in config.FRANJAS)} (hora de Madrid), riesgo {config.RIESGO_POR_TRADE:.1%} por trade.\n"
         "Dame: 1) noticias de las últimas 12 h que muevan estos activos, 2) calendario económico de hoy con impacto "
         "(alto/medio) y hora, 3) qué eventos de hoy deberían hacerme NO operar en ciertas horas, 4) sesgo "
         "fundamental por activo en una línea. Sé breve, en tabla.") + "</pre>")

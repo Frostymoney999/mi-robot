@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mi Robot">
+<title>Mi Robot de Trading</title>
+<style>
+:root{--bg:#0b0d12;--card:#141821;--line:#222836;--txt:#e9ecf2;--sub:#8b94a7;--ok:#3ddc84;--ko:#ff5d5d;--warn:#f6c445;--acc:#7aa2ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:rgba(11,13,18,.92);backdrop-filter:blur(10px);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:19px}header .sub{font-size:12px}
+main{padding:12px 14px;max-width:720px;margin:0 auto}
+.sub{color:var(--sub);font-size:13px}.ok{color:var(--ok)}.ko{color:var(--ko)}.warn{color:var(--warn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.row{display:flex;gap:10px}.row>*{flex:1}.between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.big{font-size:24px;font-weight:700;letter-spacing:-.3px}.mid{font-size:17px;font-weight:650}
+.tag{display:inline-block;white-space:nowrap;padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:700}
+.tag.ok{background:#123824}.tag.warn{background:#3a3112}.tag.ko{background:#3c1616}
+h2{font-size:15px;color:var(--sub);text-transform:uppercase;letter-spacing:.6px;margin:22px 4px 6px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(15,18,25,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:9}
+nav button{flex:1;min-width:0;background:none;border:0;color:var(--sub);padding:9px 0 8px;font-size:11px;font-weight:600}
+nav button span{display:block;font-size:21px;margin-bottom:1px}nav button.on{color:var(--acc)}
+.tab{display:none}.tab.on{display:block}
+.sig{border-left:4px solid var(--ok)}.sig.short{border-left-color:var(--ko)}
+.kv{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.kv div{background:#0f131b;border-radius:10px;padding:8px}
+.kv b{display:block;font-size:15px}.kv small{color:var(--sub);font-size:11px}
+button.btn{border:0;border-radius:12px;padding:12px;font-weight:700;font-size:15px;background:#222a3a;color:var(--txt);width:100%}
+button.btn.ok{background:#16492f;color:#bff5d5}button.btn.ko{background:#4a1c1c;color:#ffd0d0}button.btn.acc{background:#2a3b6b;color:#dfe7ff}
+button.btn:disabled{opacity:.35}
+input,select{width:100%;background:#0f131b;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:11px;font-size:16px}
+label{font-size:12px;color:var(--sub);display:block;margin:8px 0 4px}
+.bar{height:10px;background:#0f131b;border-radius:99px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;border-radius:99px}
+.banner{padding:14px;border-radius:14px;font-weight:700;margin:10px 0;text-align:center}
+.banner.ko{background:#3c1616;color:#ffc9c9}.banner.ok{background:#123824;color:#c6f7da}.banner.warn{background:#3a3112;color:#fde7a6}
+table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{padding:6px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}th{color:var(--sub);font-weight:600}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+details{background:var(--card);border:1px solid var(--line);border-radius:16px;margin:10px 0;overflow:hidden}
+summary{list-style:none;padding:14px;cursor:pointer}summary::-webkit-details-marker{display:none}
+details .in{padding:0 14px 14px}
+.chk{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.chk input{width:22px;height:22px;flex:none}
+.pill{display:inline-flex;gap:6px;flex-wrap:wrap}.pill button{border:1px solid var(--line);background:#0f131b;color:var(--txt);border-radius:99px;padding:8px 14px;font-weight:700}
+.pill button.sel{background:var(--acc);color:#0b0d12;border-color:var(--acc)}
+pre{white-space:pre-wrap;background:#0f131b;border-radius:10px;padding:10px;font-size:12.5px;margin:8px 0}
+svg{display:block;width:100%}
+.empty{text-align:center;padding:26px 10px}
+</style>
+</head>
+<body>
+<header><div class="between"><div><h1 id="titulo">🤖 Mi Robot</h1><div class="sub" id="upd">cargando…</div></div><div id="dayTag"></div></div></header>
+<main>
+  <section class="tab on" id="t-hoy"></section>
+  <section class="tab" id="t-mer"></section>
+  <section class="tab" id="t-rob"></section>
+  <section class="tab" id="t-dia"></section>
+  <section class="tab" id="t-aju"></section>
+</main>
+<nav>
+  <button class="on" data-t="hoy"><span>☀️</span>Hoy</button>
+  <button data-t="mer"><span>📈</span>Mercados</button>
+  <button data-t="rob"><span>🧠</span>Robot</button>
+  <button data-t="dia"><span>🎯</span>Mi día</button>
+  <button data-t="aju"><span>⚙️</span>Ajustes</button>
+</nav>
+<script src="datos.js"></script>
+<script>
+// ---------- estado local (solo en tu móvil) ----------
+const LS = {get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const hoyStr = () => new Date().toISOString().slice(0,10);
+let D = window.DATOS || null;
+let ajustes = LS.get("ajustes", {balance:10000});
+let dia = LS.get("dia", {fecha:hoyStr(), trades:[]});
+if (dia.fecha !== hoyStr()) { const h = LS.get("historial", []); if (dia.trades.length) h.push(dia); LS.set("historial", h.slice(-90)); dia = {fecha:hoyStr(), trades:[]}; LS.set("dia", dia); }
+let calc = {activo:null, entrada:"", sl:""};
+
+const $ = s => document.querySelector(s);
+const riesgoPct = () => (D && D.ajustes ? D.ajustes.riesgo : 1);
+const R$ = () => ajustes.balance * riesgoPct() / 100;
+const enFranja = h => (D.config.franjas||[]).some(([a,b]) => h>=a && h<b);
+const fmt = (x,n) => x==null ? "—" : (Math.abs(x) >= 100 ? x.toLocaleString("es-ES",{maximumFractionDigits:2}) : (+x).toPrecision(n||5));
+const eur = x => (x<0?"-":"") + Math.abs(x).toLocaleString("es-ES",{maximumFractionDigits:0}) + " $";
+const pct = x => (x*100).toFixed(0) + "%";
+const tagE = e => `<span class="tag ${e==="APROBADA"?"ok":"warn"}">${e}</span>`;
+const lotes = (a, dist) => { const act = D.activos.find(x=>x.nombre===a); if(!act||!dist) return null; return Math.max(0.01, Math.floor(R$()/(dist*act.valor_lote)*100)/100); };
+
+// ---------- gráficos SVG ----------
+function linea(series, {h=120, colores=null, cero=false}={}) {
+  const cs = getComputedStyle(document.documentElement); colores = colores || [cs.getPropertyValue("--acc").trim()||"#7aa2ff", "#f6c445"];
+  const all = series.flat().filter(v=>v!=null); if(!all.length) return "";
+  let mn = Math.min(...all), mx = Math.max(...all); if(cero){mn=Math.min(mn,0);mx=Math.max(mx,0)} if(mx===mn){mx+=1}
+  const W=320, n = series[0].length, X=i=>i/(n-1||1)*W, Y=v=>h-4-(v-mn)/(mx-mn)*(h-8);
+  let s = `<svg viewBox="0 0 ${W} ${h}" preserveAspectRatio="none" style="height:${h}px">`;
+  if (cero) s += `<line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="#2b3242" stroke-dasharray="4 4"/>`;
+  series.forEach((ser,k)=>{ s += `<path d="${ser.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join("")}" fill="none" stroke="${colores[k]}" stroke-width="${k?1.4:2}" vector-effect="non-scaling-stroke"/>`; });
+  return s + "</svg>";
+}
+function barras(obj, h=80) {
+  const ks = Object.keys(obj).map(Number).sort((a,b)=>a-b); if(!ks.length) return "";
+  const mx = Math.max(...ks.map(k=>obj[k])), W=320, bw = W/24;
+  let s = `<svg viewBox="0 0 ${W} ${h+14}" style="height:${h+14}px">`;
+  ks.forEach(k => { const v=obj[k], bh=v/mx*h, enF = enFranja(k);
+    s += `<rect x="${k*bw+1}" y="${h-bh}" width="${bw-2}" height="${bh}" rx="2" fill="${enF?"var(--acc)":"var(--line)"}"/>`;
+    if (k%3===0) s += `<text x="${k*bw+bw/2}" y="${h+12}" fill="#8b94a7" font-size="9" text-anchor="middle">${k}h</text>`; });
+  return s + "</svg>";
+}
+
+// ---------- estado del día ----------
+function estadoDia() {
+  const tot = dia.trades.reduce((a,t)=>a+t.R,0), perd = dia.trades.filter(t=>t.R<0).length, n = dia.trades.length;
+  const obj = D ? D.plan.objetivo_R : 0, c = D ? D.config : {max_perdidas_dia:2,max_trades_dia:3};
+  let bloqueo = null;
+  if (perd >= c.max_perdidas_dia) bloqueo = {cls:"ko", txt:`🛑 ${perd} pérdidas: hoy se acabó. Cierra la plataforma.`};
+  else if (n >= c.max_trades_dia) bloqueo = {cls:"warn", txt:`✋ Límite de ${c.max_trades_dia} trades alcanzado.`};
+  else if (obj > 0 && tot >= obj) bloqueo = {cls:"ok", txt:`🎯 Has ganado lo de una semana (${tot.toFixed(2)}R). Para y disfruta.`};
+  return {tot, perd, n, obj, bloqueo};
+}
+function pintarTag() {
+  const e = estadoDia();
+  $("#dayTag").innerHTML = e.bloqueo ? `<span class="tag ${e.bloqueo.cls}">${e.bloqueo.cls==="ok"?"OBJETIVO":"STOP"}</span>`
+    : `<span class="tag ${e.tot>=0?"ok":"ko"}">${e.tot>=0?"+":""}${e.tot.toFixed(2)}R hoy</span>`;
+}
+
+// ---------- pestaña HOY ----------
+function pintarHoy() {
+  const e = estadoDia(), S = D.senales;
+  let h = D.demo ? `<div class="banner warn">🧪 MODO DEMO · datos inventados, no operar</div>` : "";
+  if (e.bloqueo) h += `<div class="banner ${e.bloqueo.cls}">${e.bloqueo.txt}</div>`;
+  h += `<div class="row"><div class="card"><div class="sub">Señales</div><div class="big">${S.length}</div></div>
+        <div class="card"><div class="sub">1R</div><div class="big">${eur(R$())}</div></div></div>
+        <div class="row"><div class="card"><div class="sub">Stop del día</div><div class="mid ko">-${D.config.max_perdidas_dia}R · ${eur(-D.config.max_perdidas_dia*R$())}</div></div>
+        <div class="card"><div class="sub">Objetivo (1 semana)</div><div class="mid ok">${D.plan.objetivo_R>0?"+"+D.plan.objetivo_R+"R · "+eur(D.plan.objetivo_R*R$()):"—"}</div></div></div>`;
+  h += `<h2>Señales</h2>`;
+  if (!S.filter(s=>s.estado==="APROBADA").length) h += `<div class="card empty"><div style="font-size:34px">😴</div><div class="mid">Sin señales</div><div class="sub">No operar también es operar.</div></div>`;
+  const verObs = LS.get("verObs", false), nObs = S.filter(s=>s.estado!=="APROBADA").length;
+  if (nObs) h += `<div class="between" style="margin:0 4px"><span class="sub">${nObs} señal(es) en observación ${verObs?"visibles":"ocultas"}</span><button class="btn" style="width:auto;padding:6px 12px;font-size:13px" onclick="LS.set('verObs',${!verObs});todo()">${verObs?"Ocultar":"Ver"}</button></div>`;
+  S.forEach((s,i) => { if (s.estado!=="APROBADA" && !verObs) return; const lt = lotes(s.activo, s.dist_sl), largo = s.dir==="LARGO";
+    h += `<div class="card sig ${largo?"":"short"}"><div class="between"><div class="mid">${largo?"🟢 COMPRA":"🔴 VENTA"} ${s.activo} <span class="sub">${s.tf}</span></div>${tagE(s.estado)}</div>
+      <div class="kv"><div><small>Entrada ≈</small><b>${fmt(s.entrada)}</b></div><div><small>Stop</small><b class="ko">${fmt(s.sl)}</b></div><div><small>Take profit</small><b class="ok">${fmt(s.tp)}</b></div></div>
+      <div class="kv" style="grid-template-columns:1fr 1fr"><div><small>Lotes para 1R</small><b>${lt??"—"}</b></div><div><small>Riesgo</small><b>${eur(R$())}</b></div></div>
+      <p class="sub">${s.regla}${s.estado!=="APROBADA"?"<br><span class='warn'>En observación: síguela en demo.</span>":""}</p>
+      <button class="btn acc" onclick="usarCalc(${i})">Calcular y revisar checklist</button></div>`; });
+  h += `<h2>Mercados en 1 vistazo</h2><div class="card">` + D.activos.filter(a=>a.estado).map(a => { const e=a.estado, up=e.tendencia_ema50==="ALCISTA";
+    return `<div class="between" style="padding:7px 0;border-bottom:1px solid var(--line)"><b>${a.nombre}</b><span class="${up?"ok":"ko"}">${up?"▲":"▼"} ${e.tendencia_ema50.toLowerCase()}</span><span class="sub">ADX ${e.adx}</span><span class="${e["cambio_5d_%"]>=0?"ok":"ko"}">${e["cambio_5d_%"]>=0?"+":""}${e["cambio_5d_%"]}%</span></div>`; }).join("") + `</div>`;
+  const fr = (D.config.franjas||[]).map(([a,b])=>a+"-"+b+"h").join(", "), act = D.activos.map(a=>a.nombre).join(", ");
+  const prompt = `Actúa como mi analista premercado. Opero ${act}, horarios ${fr} (hora de Madrid), riesgo ${riesgoPct()}% por trade. Dame en tabla: 1) noticias de las últimas 12 h que muevan estos activos, 2) calendario económico de hoy con impacto y hora, 3) horas en las que NO debería operar, 4) sesgo fundamental por activo en una línea.`;
+  h += `<h2>Noticias y calendario</h2><div class="card"><div class="sub">Copia este prompt y pégalo en Claude:</div><pre id="pr">${prompt}</pre><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('pr').innerText);this.innerText='✓ Copiado'">Copiar prompt</button></div>`;
+  $("#t-hoy").innerHTML = h;
+}
+
+// ---------- pestaña MERCADOS ----------
+function pintarMer() {
+  $("#t-mer").innerHTML = D.activos.map((a,i) => { const e = a.estado; if (!e) return "";
+    const up = e.tendencia_ema50==="ALCISTA";
+    const anual = a.anual.length ? `<div class="scroll"><table><tr><th>Año</th><th>Rent.</th><th>Volat.</th><th>Tend.</th><th>DD</th><th>Carácter</th></tr>` +
+      a.anual.slice().reverse().map(r=>`<tr><td>${r["Año"]}</td><td class="${r["Rentab. %"]>=0?"ok":"ko"}">${r["Rentab. %"]}%</td><td>${r["Volat. anual %"]}%</td><td>${r["Días en tendencia (ADX>25) %"]}%</td><td class="ko">${r["Caída máx. %"]}%</td><td>${r["Carácter"]}</td></tr>`).join("") + `</table></div>` : "";
+    return `<details ${i===0?"open":""}><summary><div class="between"><div><div class="mid">${a.nombre} <span class="sub">${a.titulo||""}</span></div><div class="sub">${fmt(e.cierre)} · <span class="${e["cambio_5d_%"]>=0?"ok":"ko"}">${e["cambio_5d_%"]>=0?"+":""}${e["cambio_5d_%"]}% 5d</span></div></div>
+      <div style="text-align:right"><div class="${up?"ok":"ko"} mid">${up?"▲ Alcista":"▼ Bajista"}</div><div class="sub">ADX ${e.adx} · ${e.hay_tendencia}</div></div></div></summary>
+      <div class="in">${a.precio?linea([a.precio.c,a.precio.ema50]):""}<div class="sub">Precio y EMA50 (amarillo), últimos ${a.precio?a.precio.c.length:0} días</div>
+      <div class="kv"><div><small>Máx ayer</small><b>${fmt(e.max_anterior)}</b></div><div><small>Mín ayer</small><b>${fmt(e.min_anterior)}</b></div><div><small>ATR</small><b>${fmt(e.atr,4)}</b></div>
+      <div><small>Máx semana</small><b>${fmt(e.max_semana)}</b></div><div><small>Mín semana</small><b>${fmt(e.min_semana)}</b></div><div><small>EMA200</small><b class="${e.tendencia_ema200==="ALCISTA"?"ok":"ko"}">${e.tendencia_ema200==="ALCISTA"?"▲":"▼"}</b></div></div>
+      ${Object.keys(a.horas).length?`<h2>Cuándo se mueve (hora de Madrid)</h2>${barras(a.horas)}<div class="sub">Resaltadas: tus horarios.</div>`:""}
+      <h2>Año a año</h2>${anual}</div></details>`; }).join("");
+}
+
+// ---------- pestaña ROBOT ----------
+function pintarRob() {
+  let h = `<div class="card"><div class="mid">Cómo decide</div><p class="sub">Cada semana prueba miles de reglas objetivas sobre años de historia, las examina en periodos que no ha visto, las somete a Monte Carlo y solo aprueba las que mantienen ventaja. Vigila sus señales reales y se reentrena si empiezan a fallar.</p></div>`;
+  D.activos.forEach(a => a.estrategias.forEach(s => { const o = s.oos, rl = s.reales||{};
+    h += `<details><summary><div class="between"><div><div class="mid">${a.nombre} · ${s.tf}</div><div class="sub">${(D.familias[s.familia]||{}).nombre||s.familia} · ${o.esperanza>=0?"+":""}${o.esperanza.toFixed(3)}R/trade · acierto ${pct(o.acierto)}</div></div>${s.degradada?'<span class="tag ko">DEGRADADA</span>':tagE(s.estado)}</div></summary>
+      <div class="in"><p>${s.regla}</p>${s.curva&&s.curva.R?linea([s.curva.R],{cero:true,colores:[o.esperanza>0?look.verde:look.rojo]}):""}<div class="sub">Curva de la estrategia en R (histórico completo)</div>
+      <div class="kv"><div><small>Trades OOS</small><b>${o.n}</b></div><div><small>Acierto</small><b>${pct(o.acierto)}</b></div><div><small>Profit factor</small><b>${o.pf.toFixed(2)}</b></div>
+      <div><small>Gana medio</small><b class="ok">+${o.gana_med.toFixed(2)}R</b></div><div><small>Pierde medio</small><b class="ko">${o.pierde_med.toFixed(2)}R</b></div><div><small>Máx. DD</small><b>${o.max_dd.toFixed(1)}R</b></div>
+      <div><small>Prob. ventaja</small><b>${pct(s.mc.prob_positiva)}</b></div><div><small>Trades/sem</small><b>${s.trades_semana}</b></div><div><small>Señales reales</small><b>${rl.n||0}${rl.esperanza!=null?" · "+rl.esperanza.toFixed(2)+"R":""}</b></div></div>
+      ${labHTML(s.laboratorio, s.familia)}
+      <h2>Exámenes walk-forward</h2><div class="scroll"><table><tr><th>Examen hasta</th><th>Entreno</th><th>Examen</th><th>Trades</th></tr>${s.ventanas.map(v=>`<tr><td>${v.prueba_hasta}</td><td>${v.esperanza_entreno.toFixed(2)}R</td><td class="${v.esperanza_prueba>=0?"ok":"ko"}">${v.esperanza_prueba.toFixed(2)}R</td><td>${v.trades_prueba}</td></tr>`).join("")}</table></div>
+      <p class="sub">Actualizada ${s.actualizado.replace("T"," ")} · ${s.motivo}</p></div></details>`; }));
+  const sg = D.seguimiento.slice().reverse();
+  h += `<h2>Señales anteriores</h2><div class="card">` + (sg.length ? `<div class="scroll"><table><tr><th>Vela</th><th>Activo</th><th>Dir</th><th>Resultado</th></tr>` +
+    sg.map(s=>`<tr><td>${(s.vela||"").slice(0,13).replace("T"," ")}</td><td>${s.activo} ${s.tf}</td><td>${s.dir==="LARGO"?"🟢":"🔴"}</td><td class="${s.R==null?"":(s.R>0?"ok":"ko")}">${s.R==null?"abierta":(s.R>0?"+":"")+s.R.toFixed(2)+"R"}</td></tr>`).join("") + `</table></div>` : `<div class="sub">Aún no hay señales registradas.</div>`) + `</div>`;
+  $("#t-rob").innerHTML = h;
+}
+
+// ---------- pestaña MI DÍA ----------
+let rSel = null, esError = false;
+function pintarDia() {
+  const e = estadoDia(), c = D.config, hist = LS.get("historial", []);
+  let h = e.bloqueo ? `<div class="banner ${e.bloqueo.cls}">${e.bloqueo.txt}</div>` : "";
+  const pp = Math.min(100, e.perd / c.max_perdidas_dia * 100), pg = e.obj>0 ? Math.min(100, Math.max(0,e.tot)/e.obj*100) : 0;
+  h += `<div class="card"><div class="between"><div><div class="sub">Resultado de hoy</div><div class="big ${e.tot>=0?"ok":"ko"}">${e.tot>=0?"+":""}${e.tot.toFixed(2)}R</div><div class="sub">${eur(e.tot*R$())} · ${e.n}/${c.max_trades_dia} trades</div></div>
+      <div style="text-align:right"><div class="sub">Pérdidas</div><div class="big">${e.perd}/${c.max_perdidas_dia}</div></div></div>
+      <label>Hacia el stop del día</label><div class="bar"><i style="width:${pp}%;background:var(--ko)"></i></div>
+      ${e.obj>0?`<label>Hacia el objetivo (${e.obj}R)</label><div class="bar"><i style="width:${pg}%;background:var(--ok)"></i></div>`:""}</div>`;
+  h += `<h2>Apuntar un trade</h2><div class="card"><div class="pill">${[-1,-0.5,0,1,1.5,2,3].map(v=>`<button class="${rSel===v?"sel":""}" onclick="rSel=${v};pintarDia()">${v>0?"+":""}${v}R</button>`).join("")}</div>
+      <label>…u otro valor en R</label><input type="number" step="0.1" inputmode="decimal" id="rMan" placeholder="ej. 1.8 o -1">
+      <div class="chk"><input type="checkbox" id="err" ${esError?"checked":""} onchange="esError=this.checked"><div>Fue un <b>error</b> (venganza, fuera de horario, moví el stop, tamaño de más…)</div></div>
+      <div class="row" style="margin-top:10px"><button class="btn ok" onclick="apuntar()">Guardar trade</button><button class="btn" onclick="deshacer()">Deshacer</button></div>
+      ${dia.trades.length?`<div style="margin-top:8px">${dia.trades.map(t=>`<span class="tag ${t.R>=0?"ok":"ko"}" style="margin:2px">${t.R>0?"+":""}${t.R}R${t.error?" ⚠️":""}</span>`).join("")}</div>`:""}</div>`;
+  // checklist
+  const items = ["Estoy dentro de mi franja horaria", "La señal cumple la regla objetiva (no es intuición)", "No he llegado al stop ni al objetivo del día", "El tamaño es exactamente 1R (calculadora)", "El stop está puesto y no lo voy a mover"];
+  h += `<h2>Antes de entrar</h2><div class="card">${items.map((t,i)=>`<label class="chk" style="color:var(--txt);font-size:14px;margin:0"><input type="checkbox" class="ck" onchange="chk()"> ${t}</label>`).join("")}
+      <button class="btn acc" id="go" disabled style="margin-top:10px">${e.bloqueo?"Hoy no se opera":"Marca las 5 casillas"}</button></div>`;
+  // calculadora
+  h += `<h2>Calculadora de lotes</h2><div class="card"><label>Activo</label><select id="cA" onchange="calc.activo=this.value;rc()">${D.activos.map(a=>`<option ${calc.activo===a.nombre?"selected":""}>${a.nombre}</option>`).join("")}</select>
+      <div class="row"><div><label>Entrada</label><input id="cE" inputmode="decimal" value="${calc.entrada}" oninput="calc.entrada=this.value;rc()"></div><div><label>Stop loss</label><input id="cS" inputmode="decimal" value="${calc.sl}" oninput="calc.sl=this.value;rc()"></div></div>
+      <div class="kv" style="grid-template-columns:1fr 1fr"><div><small>Lotes</small><b id="cL">—</b></div><div><small>Arriesgas</small><b>${eur(R$())}</b></div></div>
+      <p class="sub">Tamaño de contrato usado ($ por lote y por 1,0 de precio) (${D.activos.map(a=>a.nombre+": "+Math.round(a.valor_lote*100)/100).join(" · ")}). Compruébalo en MT5 → Especificación.</p></div>`;
+  // historial
+  if (hist.length) { const tot = hist.reduce((a,d)=>a+d.trades.reduce((x,t)=>x+t.R,0),0), errs = hist.flatMap(d=>d.trades).filter(t=>t.error), cErr = errs.reduce((a,t)=>a+t.R,0);
+    h += `<h2>Últimos ${hist.length} días</h2><div class="card"><div class="kv"><div><small>Total</small><b class="${tot>=0?"ok":"ko"}">${tot.toFixed(1)}R</b></div><div><small>Errores</small><b>${errs.length}</b></div><div><small>Te cuestan</small><b class="${cErr>=0?"ok":"ko"}">${cErr.toFixed(1)}R</b></div></div>
+      <p class="sub">Sin errores habrías hecho <b>${(tot-cErr).toFixed(1)}R</b>. Esa es la lección del vídeo.</p>
+      ${linea([hist.reduce((acc,d)=>{acc.push((acc.at(-1)||0)+d.trades.reduce((x,t)=>x+t.R,0));return acc},[])],{h:90,cero:true})}</div>`; }
+  // ajustes
+  h += `<h2>Tu cuenta (solo en este móvil)</h2><div class="card"><div class="row"><div><label>Balance ($)</label><input type="number" inputmode="decimal" value="${ajustes.balance}" onchange="ajustes.balance=+this.value;LS.set('ajustes',ajustes);todo()"></div>
+      <div><label>Riesgo por trade</label><input disabled value="${riesgoPct()}% (en ⚙️ Ajustes)"></div></div></div>`;
+  $("#t-dia").innerHTML = h; if (!calc.activo) calc.activo = D.activos[0].nombre; rc();
+}
+function rc(){ const a=parseFloat(String(calc.entrada).replace(",",".")), s=parseFloat(String(calc.sl).replace(",",".")); const el=$("#cL"); if(el) el.textContent = (a&&s)?lotes(calc.activo, Math.abs(a-s)):"—"; }
+function chk(){ const all=[...document.querySelectorAll(".ck")].every(x=>x.checked), b=$("#go"), e=estadoDia(); b.disabled = !all || !!e.bloqueo; b.textContent = e.bloqueo?"Hoy no se opera":(all?"✅ Puedes entrar":"Marca las 5 casillas"); if(all&&!e.bloqueo){b.className="btn ok"} }
+function apuntar(){ const m = parseFloat(($("#rMan").value||"").replace(",",".")); const r = isNaN(m)?rSel:m; if(r==null) return alert("Elige un resultado en R");
+  dia.trades.push({R:r, error:esError, h:new Date().toTimeString().slice(0,5)}); LS.set("dia",dia); rSel=null; esError=false; todo(); }
+function deshacer(){ dia.trades.pop(); LS.set("dia",dia); todo(); }
+function usarCalc(i){ const s=D.senales[i]; calc={activo:s.activo, entrada:fmt(s.entrada), sl:fmt(s.sl)}; ir("dia"); }
+
+// ---------- LABORATORIO ----------
+function labHTML(lab, fam) {
+  const ks = Object.keys(lab||{}); if (!ks.length) return "";
+  const vals = ks.map(k=>lab[k].esperanza), mx = Math.max(0.05, ...vals.map(Math.abs));
+  return `<h2>Laboratorio: qué estilo funciona aquí</h2><div class="sub" style="margin-bottom:6px">Mejor versión de cada estilo, examinada fuera de muestra (R por trade).</div>` +
+    ks.sort((a,b)=>lab[b].esperanza-lab[a].esperanza).map(k => { const v = lab[k].esperanza, w = Math.abs(v)/mx*50;
+      return `<div style="display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px"><div style="width:118px;flex:none">${k===fam?"⭐ ":""}${(D.familias[k]||{}).nombre||k}</div>
+        <div style="flex:1;position:relative;height:14px;background:#0f131b;border-radius:4px"><div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#2b3242"></div>
+        <div style="position:absolute;top:2px;bottom:2px;border-radius:3px;${v>=0?`left:50%;width:${w}%;background:var(--ok)`:`right:50%;width:${w}%;background:var(--ko)`}"></div></div>
+        <div style="width:58px;text-align:right" class="${v>=0?"ok":"ko"}">${v>=0?"+":""}${v.toFixed(2)}R</div><div class="sub" style="width:34px;text-align:right">${lab[k].n}</div></div>`; }).join("");
+}
+
+// ---------- GITHUB (para guardar ajustes desde el móvil) ----------
+const GH = (() => { const host = location.hostname, path = location.pathname.split("/").filter(Boolean);
+  const auto = host.endsWith("github.io") ? {owner: host.split(".")[0], repo: path[0]||""} : {owner:"", repo:""};
+  const g = LS.get("gh", {}); return {owner: g.owner||auto.owner, repo: g.repo||auto.repo, token: g.token||""}; })();
+async function gh(ruta, opt={}) {
+  const r = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}${ruta}`, {...opt, headers:{Accept:"application/vnd.github+json", ...(GH.token?{Authorization:"Bearer "+GH.token}:{}), ...(opt.headers||{})}});
+  if (!r.ok && r.status!==204) throw new Error(r.status + " " + (await r.text()).slice(0,140));
+  return r.status===204 ? null : r.json();
+}
+let ultimaEjec = null;
+async function estadoRobot() {
+  if (!GH.owner || !GH.repo) return;
+  try { const d = await gh("/actions/runs?per_page=1"); ultimaEjec = d.workflow_runs[0] || null; pintarAju(); } catch(e) {}
+}
+function txtEjec(r) {
+  if (!r) return "—";
+  const min = Math.round((Date.now()-new Date(r.created_at))/60000), cuando = min<60?`hace ${min} min`:min<1440?`hace ${Math.round(min/60)} h`:new Date(r.created_at).toLocaleDateString("es-ES");
+  if (r.status!=="completed") return `🟡 Trabajando… (empezó ${cuando})`;
+  return r.conclusion==="success" ? `🟢 Bien · ${cuando}` : `🔴 Falló · ${cuando}`;
+}
+
+// ---------- pestaña AJUSTES ----------
+let borrador = null, guardando = "";
+const PRESETS = [["Asia", 1, 7], ["Londres", 9, 12], ["Solape Londres-NY", 14, 17], ["Nueva York", 15, 22]];
+function tog(lista, v) { const i = lista.indexOf(v); i>=0 ? lista.splice(i,1) : lista.push(v); }
+function chip(on, txt, js) { return `<button class="${on?"sel":""}" onclick="${js};pintarAju()">${txt}</button>`; }
+function pintarAju() {
+  if (!D) return;
+  if (!D.ajustes) { $("#t-aju").innerHTML = `<div class="card empty">Lanza el robot una vez con la versión nueva para activar los ajustes del robot.</div>` + aparienciaHTML(); return; }
+  if (!borrador || !borrador.activos) borrador = JSON.parse(JSON.stringify(D.ajustes)); const b = borrador, cambiado = JSON.stringify(b) !== JSON.stringify(D.ajustes);
+  let h = `<div class="card"><div class="between"><div><div class="sub">Robot en la nube</div><div class="mid">${txtEjec(ultimaEjec)}</div></div>
+    ${ultimaEjec?`<a class="tag ok" style="text-decoration:none" href="${ultimaEjec.html_url}" target="_blank">ver</a>`:""}</div></div>`;
+  // mercados
+  const cats = {}; Object.entries(D.catalogo).forEach(([k,v]) => (cats[v.cat] = cats[v.cat]||[]).push(k));
+  h += `<h2>Qué operar</h2><div class="card">` + Object.entries(cats).map(([c,ks]) => `<label>${c}</label><div class="pill">${ks.map(k=>chip(b.activos.includes(k), k, `tog(borrador.activos,'${k}')`)).join("")}</div>`).join("") +
+    `<p class="sub">${b.activos.length} mercados. Cuantos más, más tarda en aprender.</p></div>`;
+  // temporalidades
+  h += `<h2>Cómo de rápido</h2><div class="card"><div class="pill">${Object.entries(D.temporalidades).map(([k,v])=>chip(b.temporalidades.includes(k), k, `tog(borrador.temporalidades,'${k}')`)).join("")}</div>
+    <p class="sub">${Object.entries(D.temporalidades).map(([k,v])=>`<b>${k}</b>: ${v}`).join(" · ")}</p></div>`;
+  // horarios
+  const fr = b.franjas;
+  h += `<h2>Tus horarios (hora de Madrid)</h2><div class="card"><div class="pill">${PRESETS.map(([n,a,z])=>{const on = fr.some(f=>f[0]===a&&f[1]===z); return chip(on, `${n} ${a}-${z}h`, on?`borrador.franjas=borrador.franjas.filter(f=>!(f[0]===${a}&&f[1]===${z}))`:`borrador.franjas.push([${a},${z}])`);}).join("")}</div>
+    ${fr.filter(f=>!PRESETS.some(p=>p[1]===f[0]&&p[2]===f[1])).map(f=>`<div class="between" style="margin-top:8px"><span>Personalizado ${f[0]}-${f[1]}h</span><button class="btn" style="width:auto;padding:6px 12px" onclick="borrador.franjas=borrador.franjas.filter(x=>x!==borrador.franjas.find(y=>y[0]===${f[0]}&&y[1]===${f[1]}));pintarAju()">Quitar</button></div>`).join("")}
+    <label>Añadir otro horario</label><div class="row"><select id="fa">${[...Array(24).keys()].map(i=>`<option>${i}</option>`).join("")}</select><select id="fz">${[...Array(24).keys()].map(i=>`<option ${i===18?"selected":""}>${i+1}</option>`).join("")}</select><button class="btn" onclick="const a=+fa.value,z=+fz.value;if(z>a){borrador.franjas.push([a,z]);pintarAju()}">＋</button></div>
+    ${barrasHorario(fr)}
+    <label>Informe premercado a las</label><select onchange="borrador.hora_informe=+this.value">${[...Array(17).keys()].map(i=>i+5).map(i=>`<option value="${i}" ${b.hora_informe===i?"selected":""}>${i}:00</option>`).join("")}</select>
+    <label>Días</label><div class="pill">${["L","M","X","J","V","S","D"].map((d,i)=>chip(b.dias.includes(i+1), d, `tog(borrador.dias,${i+1})`)).join("")}</div>
+    <p class="sub">En H1 solo te avisa de señales dentro de estos horarios. Los avisos llegan unos minutos después de cada hora.</p></div>`;
+  // escuela / estrategias
+  const agg = {}; D.activos.forEach(a=>a.estrategias.forEach(s=>Object.entries(s.laboratorio||{}).forEach(([k,v])=>{(agg[k]=agg[k]||[]).push(v.esperanza)})));
+  h += `<h2>Escuela de estrategias</h2><div class="sub" style="margin:0 4px 6px">Activa los estilos que quieres que el robot pruebe. Entre paréntesis, cómo le han ido de media fuera de muestra en tus mercados.</div>` +
+    Object.entries(D.familias).map(([k,f]) => { const on = b.familias.includes(k), m = agg[k] ? agg[k].reduce((x,y)=>x+y,0)/agg[k].length : null;
+      return `<div class="card" style="padding:12px;${on?"":"opacity:.55"}"><div class="between"><div class="mid" style="font-size:15px">${f.nombre} ${m!=null?`<span class="${m>=0?"ok":"ko"}" style="font-size:13px">(${m>=0?"+":""}${m.toFixed(2)}R)</span>`:""}</div>
+        <label class="chk" style="border:0;padding:0;margin:0"><input type="checkbox" ${on?"checked":""} onchange="tog(borrador.familias,'${k}');pintarAju()"></label></div><div class="sub">${f.txt}</div></div>`; }).join("");
+  // acierto
+  const p = b.acierto_min||0, be = p>0 ? ((100-p)/p) : null;
+  h += `<h2>Acierto mínimo</h2><div class="card"><div class="between"><span>Exigir que gane al menos</span><b class="big">${p}%</b></div>
+    <input type="range" min="0" max="80" step="5" value="${p}" oninput="borrador.acierto_min=+this.value;pintarAju()" style="padding:0;margin-top:8px">
+    <p class="sub">${p?`Con ${p}% de acierto, cada ganancia debe valer más de <b>${be.toFixed(2)}R</b> para ganar dinero. El robot exige ambas cosas: tu acierto y esperanza positiva. Cuanto más alto, menos estrategias pasarán el examen.`:"Sin mínimo: el robot elige solo por rentabilidad y estabilidad."}</p></div>`;
+  // riesgo
+  h += `<h2>Riesgo</h2><div class="card"><div class="row"><div><label>% por trade</label><input type="number" step="0.1" inputmode="decimal" value="${b.riesgo}" onchange="borrador.riesgo=+this.value;pintarAju()"></div>
+    <div><label>Máx. pérdidas/día</label><input type="number" inputmode="numeric" value="${b.max_perdidas_dia}" onchange="borrador.max_perdidas_dia=+this.value;pintarAju()"></div>
+    <div><label>Máx. trades/día</label><input type="number" inputmode="numeric" value="${b.max_trades_dia}" onchange="borrador.max_trades_dia=+this.value;pintarAju()"></div></div>
+    <div class="chk"><input type="checkbox" ${b.avisos_observacion?"checked":""} onchange="borrador.avisos_observacion=this.checked;pintarAju()"><div>Avisarme también de señales <b>en observación</b> (no aprobadas)</div></div>
+    <label>Profundidad del aprendizaje</label><div class="pill">${[["rapida","Rápida"],["normal","Normal"],["profunda","Profunda"]].map(([k,n])=>chip(b.intensidad===k, n, `borrador.intensidad='${k}'`)).join("")}</div></div>`;
+  // guardar
+  const err = !b.activos.length ? "Elige al menos un mercado" : !b.temporalidades.length ? "Elige al menos una temporalidad" : !b.familias.length ? "Activa al menos una estrategia" : !b.dias.length ? "Elige algún día" : "";
+  h += `<div class="card" style="position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));border-color:${cambiado?"var(--acc)":"var(--line)"}">
+    ${err?`<div class="ko" style="margin-bottom:8px">${err}</div>`:""}
+    <button class="btn ${cambiado&&!err?"ok":""}" ${(!cambiado||err||guardando)?"disabled":""} onclick="guardarAjustes()">${guardando||(cambiado?"💾 Guardar y reentrenar":"Sin cambios")}</button>
+    ${cambiado?`<button class="btn" style="margin-top:8px" onclick="borrador=JSON.parse(JSON.stringify(D.ajustes));pintarAju()">Deshacer cambios</button>`:""}</div>`;
+  // conexión
+  h += `<h2>Conexión con GitHub</h2><div class="card">${GH.token?`<div class="ok">✓ Conectado a ${GH.owner}/${GH.repo}</div><button class="btn" style="margin-top:8px" onclick="desconectar()">Desconectar</button>`:
+    `<p class="sub" style="margin-top:0">Para que la app pueda guardar tus ajustes necesita una llave de GitHub (se guarda solo en este móvil):</p>
+    <ol class="sub" style="padding-left:18px"><li>Abre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" style="color:var(--acc)">crear llave en GitHub</a></li>
+    <li>Nombre: <b>app robot</b> · Expiration: <b>1 year</b></li><li>Repository access: <b>Only select repositories</b> → <b>${GH.repo||"mi-robot"}</b></li>
+    <li>Permissions → Repository: <b>Contents</b> = Read and write · <b>Actions</b> = Read and write</li><li><b>Generate token</b>, cópialo y pégalo aquí:</li></ol>
+    <input id="tk" placeholder="github_pat_..." autocomplete="off"><div class="row" style="margin-top:8px"><input id="ow" value="${GH.owner}" placeholder="usuario"><input id="rp" value="${GH.repo}" placeholder="repositorio"></div>
+    <button class="btn acc" style="margin-top:8px" onclick="conectar()">Conectar</button>`}</div>`;
+  $("#t-aju").innerHTML = h + aparienciaHTML();
+}
+function barrasHorario(fr) {
+  let s = `<svg viewBox="0 0 320 30" style="height:30px;margin-top:10px">`;
+  for (let i=0;i<24;i++){ const on = fr.some(([a,b])=>i>=a&&i<b); s += `<rect x="${i*13.3+1}" y="2" width="11.5" height="14" rx="2" fill="${on?"var(--acc)":"var(--line)"}"/>`; if(i%3===0) s += `<text x="${i*13.3+7}" y="28" fill="#8b94a7" font-size="8" text-anchor="middle">${i}h</text>`; }
+  return s + "</svg>";
+}
+async function conectar() {
+  GH.token = $("#tk").value.trim(); GH.owner = $("#ow").value.trim(); GH.repo = $("#rp").value.trim();
+  try { await gh(""); LS.set("gh", GH); alert("✓ Conectado"); estadoRobot(); }
+  catch(e) { GH.token = ""; alert("No se pudo conectar: revisa la llave y los permisos.\n" + e.message); }
+  pintarAju();
+}
+function desconectar(){ GH.token=""; LS.set("gh", {owner:GH.owner, repo:GH.repo}); pintarAju(); }
+async function guardarAjustes() {
+  if (!GH.token) { alert("Primero conecta la app con GitHub (abajo del todo)."); return; }
+  try {
+    guardando = "Guardando…"; pintarAju();
+    let sha; try { sha = (await gh("/contents/ajustes.json")).sha; } catch(e) {}
+    const txt = JSON.stringify(borrador, null, 2), b64 = btoa(unescape(encodeURIComponent(txt)));
+    await gh("/contents/ajustes.json", {method:"PUT", body: JSON.stringify({message:"Ajustes cambiados desde la app", content:b64, ...(sha?{sha}:{})})});
+    guardando = "Lanzando el robot…"; pintarAju();
+    await gh("/actions/workflows/robot.yml/dispatches", {method:"POST", body: JSON.stringify({ref:"main", inputs:{modo:"aprender"}})});
+    D.ajustes = JSON.parse(txt); guardando = "";
+    alert("✓ Guardado. El robot está reaprendiendo con tus ajustes (5-20 min). Te llegará un Telegram al terminar.");
+    setTimeout(estadoRobot, 4000); todo();
+  } catch(e) { guardando = ""; pintarAju(); alert("Error al guardar: " + e.message); }
+}
+
+
+// ---------- APARIENCIA (solo en este móvil) ----------
+const TEMAS = {
+  "Azul noche":   {bg:"#0b0d12", card:"#141821", line:"#222836", txt:"#e9ecf2", sub:"#8b94a7", acc:"#7aa2ff"},
+  "Negro y oro":  {bg:"#000000", card:"#0e0d0a", line:"#2a2412", txt:"#f3ead2", sub:"#9b8f70", acc:"#d4af37"},
+  "Matrix":       {bg:"#020805", card:"#07140c", line:"#0f2a19", txt:"#d6ffe4", sub:"#5f9a74", acc:"#22ff88"},
+  "Rojo sangre":  {bg:"#0a0405", card:"#160a0c", line:"#331217", txt:"#f6dede", sub:"#a07b80", acc:"#ff2d4a"},
+  "Neón morado":  {bg:"#0b0614", card:"#150d24", line:"#2a1a44", txt:"#efe6ff", sub:"#9a88bd", acc:"#b26bff"},
+  "Hielo":        {bg:"#06121a", card:"#0c1d28", line:"#173242", txt:"#e2f6ff", sub:"#7fa3b5", acc:"#5ad8ff"},
+  "Claro":        {bg:"#f4f5f8", card:"#ffffff", line:"#e2e5ec", txt:"#151821", sub:"#687187", acc:"#3461ff"},
+};
+let look = LS.get("look", {tema:"Azul noche", acento:null, nombre:"Mi Robot", icono:"🤖", letra:15, redondeo:16, verde:"#3ddc84", rojo:"#ff5d5d"});
+function aplicarLook() {
+  const t = TEMAS[look.tema] || TEMAS["Azul noche"], r = document.documentElement.style;
+  Object.entries(t).forEach(([k,v]) => r.setProperty("--"+k, v));
+  if (look.acento) r.setProperty("--acc", look.acento);
+  r.setProperty("--ok", look.verde); r.setProperty("--ko", look.rojo);
+  document.body.style.fontSize = look.letra + "px";
+  let st = document.getElementById("lookcss"); if (!st) { st = document.createElement("style"); st.id = "lookcss"; document.head.appendChild(st); }
+  const claro = look.tema === "Claro";
+  st.textContent = `.card,details{border-radius:${look.redondeo}px}
+    header{background:${t.bg}e8}nav{background:${t.card}f2}
+    .kv div,input,select,pre,.bar,.pill button{background:${claro?"#eef0f5":"rgba(0,0,0,.28)"}}
+    nav button.on,.ok,.tag.ok{} .btn.acc{background:var(--acc);color:${claro?"#fff":"#0b0d12"}}
+    .pill button.sel{background:var(--acc);border-color:var(--acc);color:${claro?"#fff":"#0b0d12"}}
+    ${claro?".btn{background:#e6e9f0;color:#151821} .tag.ok{background:#dff6e8} .tag.warn{background:#fbf0cf;color:#7a5b00} .tag.ko{background:#fde0e0} .banner.warn{background:#fbf0cf;color:#5c4500} .banner.ko{background:#fde0e0;color:#7a1010} .banner.ok{background:#dff6e8;color:#0d5a2f}":""}`;
+  document.querySelector('meta[name="theme-color"]').content = t.bg;
+  document.getElementById("titulo").textContent = `${look.icono} ${look.nombre}`;
+  document.title = look.nombre;
+}
+function setLook(k, v) { look[k] = v; LS.set("look", look); aplicarLook(); pintarAju(); }
+function aparienciaHTML() {
+  const iconos = ["🤖","📈","💰","🦅","🐺","🔥","💎","👑","⚡","🎯","🧠","🌙"];
+  return `<h2>🎨 Apariencia</h2><div class="card">
+    <label>Tema</label><div class="pill">${Object.keys(TEMAS).map(n => `<button class="${look.tema===n?"sel":""}" onclick="setLook('tema','${n}');setLook('acento',null)"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${TEMAS[n].acc};margin-right:5px"></span>${n}</button>`).join("")}</div>
+    <div class="row"><div><label>Color principal</label><input type="color" value="${look.acento||TEMAS[look.tema].acc}" oninput="setLook('acento',this.value)" style="height:44px;padding:4px"></div>
+    <div><label>Ganancias</label><input type="color" value="${look.verde}" oninput="setLook('verde',this.value)" style="height:44px;padding:4px"></div>
+    <div><label>Pérdidas</label><input type="color" value="${look.rojo}" oninput="setLook('rojo',this.value)" style="height:44px;padding:4px"></div></div>
+    <label>Nombre de la app</label><input value="${look.nombre}" maxlength="22" onchange="setLook('nombre',this.value||'Mi Robot')">
+    <label>Icono</label><div class="pill">${iconos.map(i=>`<button class="${look.icono===i?"sel":""}" onclick="setLook('icono','${i}')">${i}</button>`).join("")}</div>
+    <div class="row"><div><label>Tamaño de letra: ${look.letra}px</label><input type="range" min="13" max="19" value="${look.letra}" oninput="setLook('letra',+this.value)" style="padding:0"></div>
+    <div><label>Esquinas: ${look.redondeo}px</label><input type="range" min="0" max="28" value="${look.redondeo}" oninput="setLook('redondeo',+this.value)" style="padding:0"></div></div>
+    <button class="btn" style="margin-top:12px" onclick="look={tema:'Azul noche',acento:null,nombre:'Mi Robot',icono:'🤖',letra:15,redondeo:16,verde:'#3ddc84',rojo:'#ff5d5d'};LS.set('look',look);aplicarLook();pintarAju()">Volver al diseño original</button>
+    <p class="sub">Se guarda solo en este móvil. Para que el icono de la pantalla de inicio cambie de nombre, bórralo y vuelve a añadirlo.</p></div>`;
+}
+aplicarLook();
+// ---------- navegación ----------
+function ir(t){ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t)); document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on",s.id==="t-"+t)); window.scrollTo(0,0); LS.set("tab",t); }
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>ir(b.dataset.t));
+function todo(){ if(!D) return;  pintarHoy(); pintarMer(); pintarRob(); pintarDia(); pintarAju(); pintarTag();
+  const g = new Date(D.generado), min = Math.round((Date.now()-g)/60000);
+  $("#upd").textContent = "Actualizado " + (min<60? `hace ${min} min` : min<1440? `hace ${Math.round(min/60)} h` : g.toLocaleDateString("es-ES")) + (D.demo?" · DEMO":""); }
+async function cargar(){
+  try { const r = await fetch("datos.json?"+Date.now(), {cache:"no-store"}); if (r.ok) D = await r.json(); } catch(e) {}
+  if (!D) { $("#t-hoy").innerHTML = `<div class="card empty">No hay datos todavía. Ejecuta el robot una vez.</div>`; return; }
+  todo(); ir(LS.get("tab","hoy"));
+}
+cargar(); estadoRobot();
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) cargar(); });
+</script>
+</body>
+</html>
