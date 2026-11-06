@@ -46,20 +46,22 @@ Abre `https://TU-USUARIO.github.io/mi-robot/` en **Safari** → botón **Compart
 ---
 
 ## Cuándo trabaja solo
-| Hora (Madrid, invierno) | Qué hace |
+El robot se despierta cada hora y decide qué toca según lo que elijas en **⚙️ Ajustes** de la app:
+| Cuándo | Qué hace |
 |---|---|
-| Lun–Vie 07:15 | Informe premercado + señales del día → Telegram + app |
-| Lun–Vie 13:05, 14:05, 15:05 | Revisa señales H1 en tu franja → Telegram **solo si hay señal nueva** |
-| Domingo 19:00 | Reaprende con la semana nueva y te manda el resumen |
-
-GitHub a veces retrasa estas ejecuciones 5–20 min. Para cambiar las horas, edita `.github/workflows/robot.yml`
-(van en hora UTC).
+| A tu hora de informe (por defecto 8:00) en tus días | Informe premercado + señales → Telegram + app |
+| Dentro de tus horarios (por defecto 14-17h) | Revisa señales H1 → Telegram **solo si hay señal nueva aprobada** |
+| Al guardar ajustes nuevos desde la app | Reaprende todo con tu nueva configuración |
+| Domingo 19:00 | Reaprende con la semana nueva |
 
 ## Cómo usar la app
 - **Hoy**: señales con entrada, stop, take profit y **lotes calculados para tu 1R**. Stop del día y objetivo de ganancias.
   El prompt de noticias se copia con un toque y lo pegas en Claude.
 - **Mercados**: tendencia, ADX, niveles, gráfico con EMA50, a qué horas se mueve cada activo y cómo se ha comportado cada año.
 - **Robot**: qué estrategia ha aprendido, sus exámenes fuera de muestra, la curva y cómo han acabado sus señales reales.
+- **⚙️ Ajustes**: elige mercados (forex, oro, plata, petróleo, índices, cripto), temporalidades (D1/H4/H1), tus horarios,
+  la hora del informe, qué estrategias aprende (escuela de 8 estilos), acierto mínimo y riesgo. Pulsa *Guardar y reentrenar*.
+  La primera vez te pide una llave de GitHub (las instrucciones salen en la propia pantalla).
 - **Mi día**: apunta cada trade en R (y si fue un error). Bloquea el día al llegar al stop o al objetivo,
   checklist antes de entrar, calculadora de lotes y cuánto te cuestan tus errores.
 

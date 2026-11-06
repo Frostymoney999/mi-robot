@@ -37,7 +37,9 @@ def _senal(s):
 
 
 def enviar(ctx, resumen=False):
-    nuevas = [s for s in ctx["senales"] if s.get("nueva")]
+    obs = config.AJUSTES.get("avisos_observacion")
+    validas = [s for s in ctx["senales"] if obs or s["estado"] == "APROBADA"]
+    nuevas = [s for s in validas if s.get("nueva")]
     if not resumen and not nuevas:
         print("  · Telegram: sin señales nuevas, no se envía nada")
         return
@@ -52,9 +54,9 @@ def enviar(ctx, resumen=False):
         lineas.append(f"\n🛑 Paras si pierdes {config.MAX_PERDIDAS_DIA} trades ({config.MAX_PERDIDAS_DIA * riesgo.valor_R():,.0f}$)")
         if p["objetivo_R"] > 0:
             lineas.append(f"🎯 Paras si ganas {p['objetivo_R']}R ({p['objetivo_R'] * riesgo.valor_R():,.0f}$)")
-        lineas.append(f"\n{'📣 ' + str(len(ctx['senales'])) + ' señal(es) hoy' if ctx['senales'] else '😴 Sin señales: no operar también es operar'}")
+        lineas.append(f"\n{'📣 ' + str(len(validas)) + ' señal(es) hoy' if validas else '😴 Sin señales aprobadas: no operar también es operar'}")
         partes.append("\n".join(lineas))
-    for s in (ctx["senales"] if resumen else nuevas):
+    for s in (validas if resumen else nuevas):
         partes.append(_senal(s))
     if ctx.get("demo"):
         partes[0] = "🧪 <b>MODO DEMO</b> (datos inventados)\n\n" + partes[0]

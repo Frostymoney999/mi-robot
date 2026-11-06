@@ -5,7 +5,7 @@ Analiza TU historial de operaciones y separa PÉRDIDAS (parte del juego) de ERRO
 Acepta:
   · Exportación de MT5 desde la propia terminal (se lee con la librería MetaTrader5), o
   · un CSV con columnas: apertura, cierre, simbolo, tipo, volumen, precio_entrada, sl, precio_salida, beneficio
-    (fechas tipo 2026-11-03 14:35)
+    (fechas en hora de Madrid, tipo 2026-11-03 14:35)
 """
 from datetime import datetime, timedelta
 
@@ -24,6 +24,7 @@ def desde_mt5(dias=180):
         return pd.DataFrame()
     d = pd.DataFrame(list(deals), columns=deals[0]._asdict().keys())
     d["time"] = pd.to_datetime(d["time"], unit="s") - pd.Timedelta(hours=config.DESFASE_BROKER_UTC)
+    d["time"] = d["time"].dt.tz_localize("UTC").dt.tz_convert(config.ZONA).dt.tz_localize(None)  # hora de Madrid
     filas = []
     for pid, g in d[d["position_id"] > 0].groupby("position_id"):
         ent, sal = g[g["entry"] == 0], g[g["entry"] == 1]
@@ -55,10 +56,8 @@ def analizar(df):
 
     for i, t in df.iterrows():
         # 1) fuera de tu franja
-        if config.FRANJA_UTC:
-            a, b = config.FRANJA_UTC
-            if not (a <= t["apertura"].hour < b):
-                errores[i].append("fuera de horario")
+        if config.FRANJAS and not config.en_franja(t["apertura"].hour):
+            errores[i].append("fuera de horario")
         # 2) sin stop loss
         if not t.get("sl") or t["sl"] == 0:
             errores[i].append("sin stop loss")

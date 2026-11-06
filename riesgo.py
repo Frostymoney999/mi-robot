@@ -13,6 +13,17 @@ def objetivo_parada(esperanza_R, trades_semana):
     return round(obj_R, 2), round(obj_R * valor_R(), 2)
 
 
+def valor_lote(activo, precio, usdjpy=None):
+    """$ por lote y por 1,0 de movimiento, corrigiendo pares que no cotizan en dólares."""
+    info = config.CATALOGO[activo]
+    v = info["valor_lote"]
+    if info.get("cotiza") == "propio" and precio:
+        return v / precio
+    if info.get("cotiza") == "USDJPY":
+        return v / (usdjpy or 150.0)
+    return v
+
+
 def lotaje(simbolo_mt5, distancia_sl, valor_lote=None):
     """Tamaño de posición para arriesgar exactamente 1R. Usa MT5 si está abierto; si no, el tamaño de contrato de config."""
     lt = _lotaje_mt5(simbolo_mt5, distancia_sl)

@@ -1,0 +1,14 @@
+{
+  "activos": ["EURUSD", "GBPUSD", "XAUUSD", "NDX100", "BTCUSD"],
+  "temporalidades": ["D1", "H1"],
+  "familias": ["cruce", "apoyo", "ruptura", "rsi", "bollinger", "macd", "inside", "orb"],
+  "franjas": [[14, 17]],
+  "hora_informe": 8,
+  "dias": [1, 2, 3, 4, 5],
+  "riesgo": 1.0,
+  "max_perdidas_dia": 2,
+  "max_trades_dia": 3,
+  "avisos_observacion": false,
+  "intensidad": "normal",
+  "acierto_min": 0
+}

@@ -53,14 +53,16 @@ def exportar(ctx):
         estr = []
         for tf, r in a["registros"].items():
             estr.append({
-                "tf": tf, "estado": r["estado"], "regla": describir(r["params"], tf != "D1"),
+                "tf": tf, "estado": r["estado"], "regla": describir(r["params"], tf == "H1"),
                 "actualizado": r["actualizado"], "motivo": r["motivo"],
                 "oos": r["fuera_de_muestra"], "hist": r["historico_completo"], "mc": r["monte_carlo"],
                 "trades_semana": r["trades_por_semana"], "ventanas": r["ventanas"],
                 "reales": r.get("reales", {}), "curva": r.get("curva", {}), "degradada": r.get("degradada", False),
+                "laboratorio": r.get("laboratorio", {}), "familia": r["params"]["entrada"],
             })
         activos.append({
-            "nombre": a["nombre"], "valor_lote": info["valor_lote"], "simbolo": info["mt5"],
+            "nombre": a["nombre"], "titulo": info["nombre"], "cat": info["cat"],
+            "valor_lote": a.get("valor_lote", info["valor_lote"]), "simbolo": info["mt5"],
             "estado": a.get("estado"), "precio": a.get("precio"),
             "anual": a["anual"].to_dict("records") if a.get("anual") is not None else [],
             "horas": {int(k): float(v) for k, v in a["horas"].items()} if a.get("horas") is not None else {},
@@ -72,7 +74,11 @@ def exportar(ctx):
         "generado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
         "demo": ctx["demo"],
         "config": {"riesgo": config.RIESGO_POR_TRADE, "max_perdidas_dia": config.MAX_PERDIDAS_DIA,
-                   "max_trades_dia": config.MAX_TRADES_DIA, "franja_utc": config.FRANJA_UTC},
+                   "max_trades_dia": config.MAX_TRADES_DIA, "franjas": config.FRANJAS},
+        "ajustes": config.AJUSTES,
+        "catalogo": {k: {"cat": v["cat"], "nombre": v["nombre"]} for k, v in config.CATALOGO.items()},
+        "temporalidades": {k: v["nombre"] for k, v in config.TEMPORALIDADES_TODAS.items()},
+        "familias": config.FAMILIAS,
         "plan": {k: ctx["plan"][k] for k in ("objetivo_R", "esperanza_media", "trades_semana")},
         "senales": senales,
         "activos": activos,

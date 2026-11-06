@@ -23,7 +23,7 @@ def _desde_mt5(simbolo, tf, anios):
         return None
     if not mt5.initialize():
         return None
-    mapa = {"D1": mt5.TIMEFRAME_D1, "H1": mt5.TIMEFRAME_H1}
+    mapa = {"D1": mt5.TIMEFRAME_D1, "H4": mt5.TIMEFRAME_H4, "H1": mt5.TIMEFRAME_H1}
     mt5.symbol_select(simbolo, True)
     hasta = datetime.now(timezone.utc)
     desde = hasta - timedelta(days=365 * anios)
@@ -56,15 +56,24 @@ def _desde_yahoo(ticker, tf, anios):
     df.index = pd.to_datetime(df.index)
     if df.index.tz is not None:
         df.index = df.index.tz_convert("UTC").tz_localize(None)
-    return df.dropna()
+    df = df.dropna()
+    if tf == "H4":
+        df = a_h4(df)
+    return df
+
+
+def a_h4(df):
+    """Agrupa velas de 1 hora en velas de 4 horas."""
+    return df.resample("4h").agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"}).dropna()
 
 
 def demo(activo, tf, anios):
     """Serie sintética con regímenes (tendencia / rango / volatilidad) para probar el robot."""
     rng = np.random.default_rng(zlib.crc32(f"{activo}{tf}".encode()))
-    n = 252 * anios if tf == "D1" else 24 * 260 * anios
-    precio0 = {"EURUSD": 1.1, "GBPUSD": 1.3, "XAUUSD": 1900, "NDX100": 15000, "BTCUSD": 40000}.get(activo, 100)
-    vol = 0.006 if tf == "D1" else 0.0013
+    por_dia = {"D1": 1, "H4": 6, "H1": 24}[tf]
+    n = (252 if tf == "D1" else 260 * por_dia) * anios
+    precio0 = {"EURUSD": 1.1, "GBPUSD": 1.3, "XAUUSD": 1900, "NDX100": 15000, "BTCUSD": 40000, "USDJPY": 150}.get(activo, 100)
+    vol = 0.006 / por_dia ** 0.5
     deriva = np.zeros(n)
     i = 0
     while i < n:
@@ -78,7 +87,7 @@ def demo(activo, tf, anios):
     rango = np.abs(rng.normal(0, sig, n)) * close
     high = np.maximum(open_, close) + rango * 0.6
     low = np.minimum(open_, close) - rango * 0.6
-    freq = "B" if tf == "D1" else "h"
+    freq = {"D1": "B", "H4": "4h", "H1": "h"}[tf]
     idx = pd.date_range(end=pd.Timestamp.utcnow().floor("D").tz_localize(None), periods=n, freq=freq)
     return pd.DataFrame({"open": open_, "high": high, "low": low, "close": close,
                          "volume": rng.integers(100, 1000, n)}, index=idx)
@@ -86,7 +95,7 @@ def demo(activo, tf, anios):
 
 def cargar(activo, tf, modo_demo=False, refrescar=True):
     """Devuelve un DataFrame OHLCV con índice en UTC."""
-    info = config.ACTIVOS[activo]
+    info = config.CATALOGO[activo]
     anios = config.TEMPORALIDADES[tf]["anios"]
     if modo_demo:
         return demo(activo, tf, anios)

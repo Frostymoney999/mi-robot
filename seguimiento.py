@@ -53,7 +53,7 @@ def resolver(activo, tf, f, coste):
         i = f["t"].searchsorted(np.datetime64(s["vela"]))
         if i >= len(f["c"]) or str(f["t"][i])[:16] != s["vela"][:16]:
             continue
-        tr = backtest(f, s["params"], coste, tf != "D1", desde=i, hasta=len(f["c"]))
+        tr = backtest(f, s["params"], coste, tf == "H1", desde=i, hasta=len(f["c"]))
         if tr and tr[0]["i"] == i and tr[0]["salida"] < len(f["c"]) - 1:
             s["estado"], s["R"] = "cerrada", round(tr[0]["R"], 3)
             cambios += 1

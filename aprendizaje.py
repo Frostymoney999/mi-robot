@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 
 import config
-from estrategia import aleatoria, backtest, clave, metricas, mutar, puntuar
+from estrategia import aleatoria, backtest, clave, metricas, mutar, puntuar, valida
 
 MEMORIA = os.path.join(os.path.dirname(__file__), "memoria", "conocimiento.json")
 os.makedirs(os.path.dirname(MEMORIA), exist_ok=True)
@@ -40,8 +40,11 @@ def guardar_memoria(m):
 
 
 def _buscar(f, coste, intradia, desde, hasta, rng, semillas=()):
-    """Búsqueda evolutiva dentro de [desde, hasta). Devuelve lista ordenada (nota, params, métricas)."""
-    vistos, pob = {}, [dict(s) for s in semillas] + [aleatoria(rng) for _ in range(config.CANDIDATOS_ALEATORIOS)]
+    """Búsqueda evolutiva dentro de [desde, hasta). Devuelve lista ordenada (nota, params, métricas).
+    Garantiza que cada familia de estrategia recibe su parte de candidatos."""
+    semillas = [dict(s) for s in semillas if s and valida(s, intradia)]
+    pob = semillas + [aleatoria(rng, intradia) for _ in range(config.CANDIDATOS_ALEATORIOS)]
+    vistos = {}
     for gen in range(config.GENERACIONES + 1):
         for p in pob:
             k = clave(p)
@@ -49,8 +52,14 @@ def _buscar(f, coste, intradia, desde, hasta, rng, semillas=()):
                 continue
             m = metricas(backtest(f, p, coste, intradia, desde, hasta))
             vistos[k] = (puntuar(m, config.MIN_TRADES_ENTRENO), p, m)
-        top = sorted(vistos.values(), key=lambda x: -x[0])[:15]
-        pob = [mutar(p, rng) for _, p, _ in top for _ in range(5)]
+        orden = sorted(vistos.values(), key=lambda x: -x[0])
+        top = orden[:12]
+        # además, las 2 mejores de cada familia para que ninguna se quede sin explorar
+        por_fam = {}
+        for x in orden:
+            por_fam.setdefault(x[1]["entrada"], []).append(x)
+        top += [x for lst in por_fam.values() for x in lst[:2]]
+        pob = [mutar(p, rng, intradia) for _, p, _ in top for _ in range(4)]
     return sorted(vistos.values(), key=lambda x: -x[0])
 
 
@@ -78,11 +87,13 @@ def monte_carlo(rs, n=3000, rng=None):
 
 
 def aprender(activo, tf, f, coste, memoria, log=print):
-    intradia = tf != "D1"
+    intradia = tf == "H1"
     rng = np.random.default_rng(config.SEMILLA)
     clave_m = f"{activo}_{tf}"
     previo = memoria.get(clave_m, {})
     campeon = previo.get("params")
+    if campeon and not valida(campeon, intradia):
+        campeon = None   # usa una familia que has desactivado o es de una versión anterior
 
     ventanas = _ventanas(f["t"], tf)
     if len(ventanas) < 2:
@@ -90,9 +101,17 @@ def aprender(activo, tf, f, coste, memoria, log=print):
         return None
 
     oos, detalle, semillas = [], [], ([campeon] if campeon else [])
+    lab = {}   # laboratorio: resultado fuera de muestra de la MEJOR estrategia de cada familia
     for k, (a, b, c) in enumerate(ventanas):
         ranking = _buscar(f, coste, intradia, a, b, rng, semillas)
         nota, mejor, m_ent = ranking[0]
+        vistas = set()
+        for nt, p, _ in ranking:
+            fam = p["entrada"]
+            if fam in vistas or nt <= -9:
+                continue
+            vistas.add(fam)
+            lab.setdefault(fam, []).extend(t["R"] for t in backtest(f, p, coste, intradia, b, c))
         tr = backtest(f, mejor, coste, intradia, b, c)
         m_oos = metricas(tr)
         oos += [t["R"] for t in tr]
@@ -123,7 +142,8 @@ def aprender(activo, tf, f, coste, memoria, log=print):
     mc = monte_carlo(oos)
     hist = metricas(backtest(f, elegido, coste, intradia))
     anios = (f["t"][-1] - f["t"][0]).days / 365
-    aprobada = (m_oos["esperanza"] >= config.UMBRAL_APROBACION_R and mc["p5_esperanza"] > 0 and m_oos["n"] >= 20)
+    aprobada = (m_oos["esperanza"] >= config.UMBRAL_APROBACION_R and mc["p5_esperanza"] > 0 and m_oos["n"] >= 20
+                and m_oos["acierto"] >= config.ACIERTO_MIN - 0.05)
 
     registro = {
         "actualizado": datetime.now().isoformat(timespec="minutes"),
@@ -135,6 +155,9 @@ def aprender(activo, tf, f, coste, memoria, log=print):
         "historico_completo": {k: round(v, 3) for k, v in hist.items()},
         "trades_por_semana": round(hist["n"] / max(anios * 52, 1), 2),
         "ventanas": detalle,
+        "laboratorio": {fam: {"n": len(rs), "esperanza": round(float(np.mean(rs)), 3) if rs else 0.0,
+                              "prob_positiva": round(monte_carlo(rs)["prob_positiva"], 2)}
+                        for fam, rs in lab.items()},
         "degradada": False,
         "aprendizajes_previos": (previo.get("aprendizajes_previos", []) + (
             [{"fecha": previo.get("actualizado"), "params": campeon, "estado": previo.get("estado")}] if campeon else []))[-10:],
