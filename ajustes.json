@@ -1,14 +1,61 @@
 {
-  "activos": ["EURUSD", "GBPUSD", "XAUUSD", "NDX100", "BTCUSD"],
-  "temporalidades": ["D1", "H1"],
-  "familias": ["cruce", "apoyo", "ruptura", "rsi", "bollinger", "macd", "inside", "orb"],
-  "franjas": [[14, 17]],
+  "activos": [
+    "EURUSD",
+    "GBPUSD",
+    "XAUUSD",
+    "NDX100",
+    "BTCUSD",
+    "ETHUSD",
+    "SOLUSD",
+    "XRPUSD",
+    "EURJPY",
+    "GBPJPY"
+  ],
+  "temporalidades": [
+    "D1",
+    "H1",
+    "H4"
+  ],
+  "familias": [
+    "cruce",
+    "apoyo",
+    "ruptura",
+    "rsi",
+    "bollinger",
+    "macd",
+    "inside",
+    "orb"
+  ],
+  "franjas": [
+    [
+      14,
+      17
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      15,
+      22
+    ],
+    [
+      9,
+      12
+    ]
+  ],
   "hora_informe": 8,
-  "dias": [1, 2, 3, 4, 5],
-  "riesgo": 1.0,
+  "dias": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "riesgo": 0.7,
   "max_perdidas_dia": 2,
   "max_trades_dia": 3,
-  "avisos_observacion": false,
-  "intensidad": "normal",
-  "acierto_min": 0
+  "avisos_observacion": true,
+  "intensidad": "profunda",
+  "acierto_min": 55
 }
