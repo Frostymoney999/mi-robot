@@ -71,5 +71,30 @@
     "sl": 95.82422966550415,
     "tp": 79.12208445682191,
     "dist_sl": 6.680858083472893
+  },
+  {
+    "activo": "SOLUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 200,
+      "adx_min": 0,
+      "sl_atr": 1.5,
+      "tp_r": 1.5,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 40,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "ruptura"
+    },
+    "clave": "(('adx_min', 0), ('ema', 200), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-08 00:00:00",
+    "dir": "CORTO",
+    "entrada": 86.24284362792969,
+    "sl": 92.43448454516319,
+    "tp": 76.95538225207943,
+    "dist_sl": 6.191640917233501
   }
 ]
