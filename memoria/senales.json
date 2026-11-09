@@ -96,5 +96,80 @@
     "sl": 92.43448454516319,
     "tp": 76.95538225207943,
     "dist_sl": 6.191640917233501
+  },
+  {
+    "activo": "XAUUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 20,
+      "adx_min": 15,
+      "sl_atr": 1.0,
+      "tp_r": 0.75,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 20,
+      "franja": true,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 20), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
+    "estado": "abierta",
+    "vela": "2026-11-09 17:00:00",
+    "dir": "CORTO",
+    "entrada": 4110.60009765625,
+    "sl": 4129.9728270355945,
+    "tp": 4096.070550621742,
+    "dist_sl": 19.37272937934414
+  },
+  {
+    "activo": "EURJPY",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 15,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "ambos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-09 12:00:00",
+    "dir": "LARGO",
+    "entrada": 177.00999450683594,
+    "sl": 175.8705248380636,
+    "tp": 177.5797293412221,
+    "dist_sl": 1.1394696687723416
+  },
+  {
+    "activo": "GBPJPY",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "largos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 100,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-09 12:00:00",
+    "dir": "LARGO",
+    "entrada": 211.91600036621094,
+    "sl": 210.50213857490826,
+    "tp": 212.62293126186228,
+    "dist_sl": 1.413861791302686
   }
 ]
