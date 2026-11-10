@@ -39,13 +39,14 @@
       "entrada": "cruce"
     },
     "clave": "(('adx_min', 0), ('ema', 100), ('entrada', 'cruce'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 55), ('sentido', 'cortos'), ('sl_atr', 1.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-05 00:00:00",
     "dir": "CORTO",
     "entrada": 2234.476318359375,
     "sl": 2383.3085999682294,
     "tp": 2160.060177554948,
-    "dist_sl": 148.83228160885426
+    "dist_sl": 148.83228160885426,
+    "R": 0.487
   },
   {
     "activo": "SOLUSD",
