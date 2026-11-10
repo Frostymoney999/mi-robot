@@ -114,13 +114,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 20), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-09 17:00:00",
     "dir": "CORTO",
     "entrada": 4110.60009765625,
     "sl": 4129.9728270355945,
     "tp": 4096.070550621742,
-    "dist_sl": 19.37272937934414
+    "dist_sl": 19.37272937934414,
+    "R": -1.018
   },
   {
     "activo": "EURJPY",
@@ -171,5 +172,30 @@
     "sl": 210.50213857490826,
     "tp": 212.62293126186228,
     "dist_sl": 1.413861791302686
+  },
+  {
+    "activo": "GBPUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 20,
+      "adx_min": 15,
+      "sl_atr": 1.5,
+      "tp_r": 0.5,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 25,
+      "orb_hora": 15,
+      "max_velas": 20,
+      "franja": false,
+      "entrada": "cruce"
+    },
+    "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'cruce'), ('franja', False), ('max_velas', 20), ('orb_hora', 15), ('rsi_nivel', 25), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-09 00:00:00",
+    "dir": "CORTO",
+    "entrada": 1.33604097366333,
+    "sl": 1.3481132720503308,
+    "tp": 1.3300048244698297,
+    "dist_sl": 0.012072298387000826
   }
 ]
