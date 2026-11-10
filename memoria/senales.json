@@ -141,13 +141,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-09 12:00:00",
     "dir": "LARGO",
     "entrada": 177.00999450683594,
     "sl": 175.8705248380636,
     "tp": 177.5797293412221,
-    "dist_sl": 1.1394696687723416
+    "dist_sl": 1.1394696687723416,
+    "R": 0.482
   },
   {
     "activo": "GBPJPY",
@@ -166,13 +167,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-09 12:00:00",
     "dir": "LARGO",
     "entrada": 211.91600036621094,
     "sl": 210.50213857490826,
     "tp": 212.62293126186228,
-    "dist_sl": 1.413861791302686
+    "dist_sl": 1.413861791302686,
+    "R": 0.479
   },
   {
     "activo": "GBPUSD",
@@ -198,5 +200,55 @@
     "sl": 1.3481132720503308,
     "tp": 1.3300048244698297,
     "dist_sl": 0.012072298387000826
+  },
+  {
+    "activo": "GBPUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 100,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 0.75,
+      "sentido": "cortos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 9,
+      "max_velas": 50,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 0), ('ema', 100), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 2.5), ('tp_r', 0.75))",
+    "estado": "abierta",
+    "vela": "2026-11-10 12:00:00",
+    "dir": "CORTO",
+    "entrada": 1.3336355686187744,
+    "sl": 1.3414293976676988,
+    "tp": 1.3277901968320813,
+    "dist_sl": 0.007793829048924243
+  },
+  {
+    "activo": "NDX100",
+    "tf": "H4",
+    "params": {
+      "ema": 20,
+      "adx_min": 0,
+      "sl_atr": 1.0,
+      "tp_r": 0.75,
+      "sentido": "cortos",
+      "ruptura_n": 10,
+      "rsi_nivel": 25,
+      "orb_hora": 15,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "inside"
+    },
+    "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'inside'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 25), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
+    "estado": "abierta",
+    "vela": "2026-11-10 12:00:00",
+    "dir": "CORTO",
+    "entrada": 27676.46875,
+    "sl": 28091.270198796225,
+    "tp": 27365.36766340283,
+    "dist_sl": 414.80144879622435
   }
 ]
