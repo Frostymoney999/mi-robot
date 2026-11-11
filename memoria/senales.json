@@ -250,5 +250,55 @@
     "sl": 28091.270198796225,
     "tp": 27365.36766340283,
     "dist_sl": 414.80144879622435
+  },
+  {
+    "activo": "BTCUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 20,
+      "adx_min": 20,
+      "sl_atr": 2.5,
+      "tp_r": 4.0,
+      "sentido": "ambos",
+      "ruptura_n": 55,
+      "rsi_nivel": 40,
+      "orb_hora": 15,
+      "max_velas": 50,
+      "franja": true,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 20), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 50), ('orb_hora', 15), ('rsi_nivel', 40), ('ruptura_n', 55), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 4.0))",
+    "estado": "abierta",
+    "vela": "2026-11-11 04:00:00",
+    "dir": "CORTO",
+    "entrada": 73633.2890625,
+    "sl": 74870.88009994515,
+    "tp": 68682.92491271939,
+    "dist_sl": 1237.5910374451519
+  },
+  {
+    "activo": "GBPJPY",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "largos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 100,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-11 00:00:00",
+    "dir": "LARGO",
+    "entrada": 212.00999450683594,
+    "sl": 210.6675229663449,
+    "tp": 212.68123027708145,
+    "dist_sl": 1.3424715404910401
   }
 ]
