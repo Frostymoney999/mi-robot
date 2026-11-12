@@ -396,13 +396,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 0), ('ema', 100), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 50), ('orb_hora', 15), ('rsi_nivel', 40), ('ruptura_n', 55), ('sentido', 'cortos'), ('sl_atr', 2.0), ('tp_r', 0.75))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-11 20:30:00",
     "dir": "CORTO",
     "entrada": 28374.005859375,
     "sl": 28779.07839133787,
     "tp": 28070.201460402848,
-    "dist_sl": 405.07253196286774
+    "dist_sl": 405.07253196286774,
+    "R": -1.004
   },
   {
     "activo": "XAUUSD",
@@ -471,13 +472,14 @@
       "entrada": "macd"
     },
     "clave": "(('adx_min', 25), ('ema', 50), ('entrada', 'macd'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 55), ('sentido', 'largos'), ('sl_atr', 2.0), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 09:00:00",
     "dir": "LARGO",
     "entrada": 177.17799377441406,
     "sl": 176.81654095497544,
     "tp": 177.35872018413338,
-    "dist_sl": 0.3614528194386302
+    "dist_sl": 0.3614528194386302,
+    "R": -1.055
   },
   {
     "activo": "GBPJPY",
@@ -503,5 +505,55 @@
     "sl": 210.68389256429833,
     "tp": 212.55004437947193,
     "dist_sl": 1.2441012101157325
+  },
+  {
+    "activo": "XAUUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 20,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 3.0,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "ruptura"
+    },
+    "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 3.0))",
+    "estado": "abierta",
+    "vela": "2026-11-12 12:00:00",
+    "dir": "CORTO",
+    "entrada": 3874.60009765625,
+    "sl": 3968.987717606854,
+    "tp": 3591.4372378044386,
+    "dist_sl": 94.38761995060378
+  },
+  {
+    "activo": "EURJPY",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 15,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "ambos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-12 12:00:00",
+    "dir": "CORTO",
+    "entrada": 176.9530029296875,
+    "sl": 177.8874677244967,
+    "tp": 176.4857705322829,
+    "dist_sl": 0.9344647948091882
   }
 ]
