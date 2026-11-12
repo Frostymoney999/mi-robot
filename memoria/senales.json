@@ -193,13 +193,14 @@
       "entrada": "cruce"
     },
     "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'cruce'), ('franja', False), ('max_velas', 20), ('orb_hora', 15), ('rsi_nivel', 25), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-09 00:00:00",
     "dir": "CORTO",
     "entrada": 1.33604097366333,
     "sl": 1.3481132720503308,
     "tp": 1.3300048244698297,
-    "dist_sl": 0.012072298387000826
+    "dist_sl": 0.012072298387000826,
+    "R": 0.485
   },
   {
     "activo": "GBPUSD",
@@ -218,13 +219,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 0), ('ema', 100), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 2.5), ('tp_r', 0.75))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-10 12:00:00",
     "dir": "CORTO",
     "entrada": 1.3336355686187744,
     "sl": 1.3414293976676988,
     "tp": 1.3277901968320813,
-    "dist_sl": 0.007793829048924243
+    "dist_sl": 0.007793829048924243,
+    "R": 0.727
   },
   {
     "activo": "NDX100",
@@ -243,13 +245,14 @@
       "entrada": "inside"
     },
     "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'inside'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 25), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-10 12:00:00",
     "dir": "CORTO",
     "entrada": 27676.46875,
     "sl": 28091.270198796225,
     "tp": 27365.36766340283,
-    "dist_sl": 414.80144879622435
+    "dist_sl": 414.80144879622435,
+    "R": -1.358
   },
   {
     "activo": "BTCUSD",
@@ -325,5 +328,80 @@
     "sl": 89.43363196132867,
     "tp": 74.00022497060465,
     "dist_sl": 6.173362796289615
+  },
+  {
+    "activo": "GBPUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 20,
+      "adx_min": 15,
+      "sl_atr": 1.5,
+      "tp_r": 0.5,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 25,
+      "orb_hora": 15,
+      "max_velas": 20,
+      "franja": false,
+      "entrada": "cruce"
+    },
+    "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'cruce'), ('franja', False), ('max_velas', 20), ('orb_hora', 15), ('rsi_nivel', 25), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-11 00:00:00",
+    "dir": "CORTO",
+    "entrada": 1.3348639011383057,
+    "sl": 1.3485751405187172,
+    "tp": 1.3280082814480998,
+    "dist_sl": 0.01371123938041159
+  },
+  {
+    "activo": "XAUUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 20,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 3.0,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "ruptura"
+    },
+    "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 3.0))",
+    "estado": "abierta",
+    "vela": "2026-11-11 20:00:00",
+    "dir": "CORTO",
+    "entrada": 3983.800048828125,
+    "sl": 4065.1686273748437,
+    "tp": 3739.6943131879693,
+    "dist_sl": 81.36857854671858
+  },
+  {
+    "activo": "NDX100",
+    "tf": "H1",
+    "params": {
+      "ema": 100,
+      "adx_min": 0,
+      "sl_atr": 2.0,
+      "tp_r": 0.75,
+      "sentido": "cortos",
+      "ruptura_n": 55,
+      "rsi_nivel": 40,
+      "orb_hora": 15,
+      "max_velas": 50,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 0), ('ema', 100), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 50), ('orb_hora', 15), ('rsi_nivel', 40), ('ruptura_n', 55), ('sentido', 'cortos'), ('sl_atr', 2.0), ('tp_r', 0.75))",
+    "estado": "abierta",
+    "vela": "2026-11-11 20:30:00",
+    "dir": "CORTO",
+    "entrada": 28374.005859375,
+    "sl": 28779.07839133787,
+    "tp": 28070.201460402848,
+    "dist_sl": 405.07253196286774
   }
 ]
