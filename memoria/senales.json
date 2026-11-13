@@ -548,12 +548,13 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 12:00:00",
     "dir": "CORTO",
     "entrada": 176.9530029296875,
     "sl": 177.8874677244967,
     "tp": 176.4857705322829,
-    "dist_sl": 0.9344647948091882
+    "dist_sl": 0.9344647948091882,
+    "R": 0.479
   }
 ]
