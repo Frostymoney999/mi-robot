@@ -557,5 +557,55 @@
     "tp": 176.4857705322829,
     "dist_sl": 0.9344647948091882,
     "R": 0.479
+  },
+  {
+    "activo": "EURUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 200,
+      "adx_min": 15,
+      "sl_atr": 3.0,
+      "tp_r": 1.5,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 50,
+      "franja": false,
+      "entrada": "macd"
+    },
+    "clave": "(('adx_min', 15), ('ema', 200), ('entrada', 'macd'), ('franja', False), ('max_velas', 50), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 3.0), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-13 15:00:00",
+    "dir": "CORTO",
+    "entrada": 1.1030223369598389,
+    "sl": 1.106694880685278,
+    "tp": 1.09751352137168,
+    "dist_sl": 0.003672543725439305
+  },
+  {
+    "activo": "GBPUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 20,
+      "adx_min": 30,
+      "sl_atr": 3.0,
+      "tp_r": 1.5,
+      "sentido": "cortos",
+      "ruptura_n": 10,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 50,
+      "franja": true,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 30), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 3.0), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-13 15:00:00",
+    "dir": "CORTO",
+    "entrada": 1.3221392631530762,
+    "sl": 1.326442141595906,
+    "tp": 1.3156849454888313,
+    "dist_sl": 0.004302878442829906
   }
 ]
