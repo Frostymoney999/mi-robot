@@ -14,13 +14,14 @@
       "franja": false
     },
     "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'cruce'), ('franja', False), ('max_velas', 50), ('ruptura_n', 10), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 1.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-05 00:00:00",
     "dir": "CORTO",
     "entrada": 75942.125,
     "sl": 78384.07400568684,
     "tp": 72279.20149146975,
-    "dist_sl": 2441.949005686836
+    "dist_sl": 2441.949005686836,
+    "R": 1.488
   },
   {
     "activo": "ETHUSD",
@@ -65,13 +66,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 200), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 1.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-05 00:00:00",
     "dir": "CORTO",
     "entrada": 89.14337158203125,
     "sl": 95.82422966550415,
     "tp": 79.12208445682191,
-    "dist_sl": 6.680858083472893
+    "dist_sl": 6.680858083472893,
+    "R": 1.478
   },
   {
     "activo": "SOLUSD",
@@ -372,13 +374,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 3.0))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-11 20:00:00",
     "dir": "CORTO",
     "entrada": 3983.800048828125,
     "sl": 4065.1686273748437,
     "tp": 3739.6943131879693,
-    "dist_sl": 81.36857854671858
+    "dist_sl": 81.36857854671858,
+    "R": 1.313
   },
   {
     "activo": "NDX100",
@@ -448,13 +451,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 15), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 04:00:00",
     "dir": "LARGO",
     "entrada": 177.03700256347656,
     "sl": 176.08196103976525,
     "tp": 177.51452332533222,
-    "dist_sl": 0.9550415237113032
+    "dist_sl": 0.9550415237113032,
+    "R": -1.021
   },
   {
     "activo": "EURJPY",
@@ -607,5 +611,55 @@
     "sl": 1.326442141595906,
     "tp": 1.3156849454888313,
     "dist_sl": 0.004302878442829906
+  },
+  {
+    "activo": "EURUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 20,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "ambos",
+      "ruptura_n": 10,
+      "rsi_nivel": 40,
+      "orb_hora": 9,
+      "max_velas": 50,
+      "franja": false,
+      "entrada": "macd"
+    },
+    "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'macd'), ('franja', False), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-13 00:00:00",
+    "dir": "CORTO",
+    "entrada": 1.1050212383270264,
+    "sl": 1.124455865837257,
+    "tp": 1.0953039245719112,
+    "dist_sl": 0.019434627510230583
+  },
+  {
+    "activo": "SOLUSD",
+    "tf": "D1",
+    "params": {
+      "ema": 200,
+      "adx_min": 0,
+      "sl_atr": 1.5,
+      "tp_r": 1.5,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 40,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "ruptura"
+    },
+    "clave": "(('adx_min', 0), ('ema', 200), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-14 00:00:00",
+    "dir": "CORTO",
+    "entrada": 70.1768569946289,
+    "sl": 76.85230097506947,
+    "tp": 60.163691023968056,
+    "dist_sl": 6.675443980440567
   }
 ]
