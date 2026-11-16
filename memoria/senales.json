@@ -92,13 +92,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 200), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 1.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-08 00:00:00",
     "dir": "CORTO",
     "entrada": 86.24284362792969,
     "sl": 92.43448454516319,
     "tp": 76.95538225207943,
-    "dist_sl": 6.191640917233501
+    "dist_sl": 6.191640917233501,
+    "R": 1.476
   },
   {
     "activo": "XAUUSD",
@@ -324,13 +325,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 200), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 40), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 1.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-10 00:00:00",
     "dir": "CORTO",
     "entrada": 83.26026916503906,
     "sl": 89.43363196132867,
     "tp": 74.00022497060465,
-    "dist_sl": 6.173362796289615
+    "dist_sl": 6.173362796289615,
+    "R": 1.476
   },
   {
     "activo": "GBPUSD",
@@ -529,13 +531,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 3.0))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 12:00:00",
     "dir": "CORTO",
     "entrada": 3874.60009765625,
     "sl": 3968.987717606854,
     "tp": 3591.4372378044386,
-    "dist_sl": 94.38761995060378
+    "dist_sl": 94.38761995060378,
+    "R": -0.026
   },
   {
     "activo": "EURJPY",
@@ -680,13 +683,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 20), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-16 00:00:00",
     "dir": "CORTO",
     "entrada": 3893.199951171875,
     "sl": 3909.609088866852,
     "tp": 3880.8930979006427,
-    "dist_sl": 16.409137694976632
+    "dist_sl": 16.409137694976632,
+    "R": 0.729
   },
   {
     "activo": "BTCUSD",
