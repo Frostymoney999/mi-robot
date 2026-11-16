@@ -426,13 +426,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 20), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 3.0))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 04:00:00",
     "dir": "CORTO",
     "entrada": 3970.5,
     "sl": 4051.7660952210035,
     "tp": 3726.7017143369894,
-    "dist_sl": 81.2660952210035
+    "dist_sl": 81.2660952210035,
+    "R": 1.024
   },
   {
     "activo": "EURJPY",
@@ -661,5 +662,55 @@
     "sl": 76.85230097506947,
     "tp": 60.163691023968056,
     "dist_sl": 6.675443980440567
+  },
+  {
+    "activo": "XAUUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 20,
+      "adx_min": 15,
+      "sl_atr": 1.0,
+      "tp_r": 0.75,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 20,
+      "franja": true,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 15), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 20), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 1.0), ('tp_r', 0.75))",
+    "estado": "abierta",
+    "vela": "2026-11-16 00:00:00",
+    "dir": "CORTO",
+    "entrada": 3893.199951171875,
+    "sl": 3909.609088866852,
+    "tp": 3880.8930979006427,
+    "dist_sl": 16.409137694976632
+  },
+  {
+    "activo": "BTCUSD",
+    "tf": "H1",
+    "params": {
+      "ema": 20,
+      "adx_min": 20,
+      "sl_atr": 2.5,
+      "tp_r": 4.0,
+      "sentido": "ambos",
+      "ruptura_n": 55,
+      "rsi_nivel": 40,
+      "orb_hora": 15,
+      "max_velas": 50,
+      "franja": true,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 20), ('ema', 20), ('entrada', 'apoyo'), ('franja', True), ('max_velas', 50), ('orb_hora', 15), ('rsi_nivel', 40), ('ruptura_n', 55), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 4.0))",
+    "estado": "abierta",
+    "vela": "2026-11-16 00:00:00",
+    "dir": "CORTO",
+    "entrada": 64888.25,
+    "sl": 66475.38969029668,
+    "tp": 58539.69123881328,
+    "dist_sl": 1587.1396902966817
   }
 ]
