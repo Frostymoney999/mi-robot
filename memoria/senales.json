@@ -300,13 +300,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-11 00:00:00",
     "dir": "LARGO",
     "entrada": 212.00999450683594,
     "sl": 210.6675229663449,
     "tp": 212.68123027708145,
-    "dist_sl": 1.3424715404910401
+    "dist_sl": 1.3424715404910401,
+    "R": -1.022
   },
   {
     "activo": "SOLUSD",
@@ -506,13 +507,14 @@
       "entrada": "apoyo"
     },
     "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-12 04:00:00",
     "dir": "LARGO",
     "entrada": 211.92799377441406,
     "sl": 210.68389256429833,
     "tp": 212.55004437947193,
-    "dist_sl": 1.2441012101157325
+    "dist_sl": 1.2441012101157325,
+    "R": -1.024
   },
   {
     "activo": "XAUUSD",
