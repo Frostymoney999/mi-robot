@@ -771,5 +771,30 @@
     "sl": 77.72907694812544,
     "tp": 68.76183969505773,
     "dist_sl": 2.9890790843559016
+  },
+  {
+    "activo": "BTCUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 20,
+      "adx_min": 30,
+      "sl_atr": 2.5,
+      "tp_r": 1.5,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 35,
+      "orb_hora": 9,
+      "max_velas": 50,
+      "franja": false,
+      "entrada": "inside"
+    },
+    "clave": "(('adx_min', 30), ('ema', 20), ('entrada', 'inside'), ('franja', False), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 1.5))",
+    "estado": "abierta",
+    "vela": "2026-11-18 08:00:00",
+    "dir": "CORTO",
+    "entrada": 64151.1796875,
+    "sl": 67038.04418867927,
+    "tp": 59820.88293573109,
+    "dist_sl": 2886.8645011792746
   }
 ]
