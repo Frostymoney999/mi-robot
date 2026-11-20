@@ -739,13 +739,14 @@
       "entrada": "ruptura"
     },
     "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 25), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 2.0))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-18 00:00:00",
     "dir": "CORTO",
     "entrada": 3790.0,
     "sl": 3873.436386519767,
     "tp": 3623.127226960466,
-    "dist_sl": 83.43638651976701
+    "dist_sl": 83.43638651976701,
+    "R": 1.439
   },
   {
     "activo": "SOLUSD",
@@ -764,13 +765,14 @@
       "entrada": "bollinger"
     },
     "clave": "(('adx_min', 15), ('ema', 200), ('entrada', 'bollinger'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'ambos'), ('sl_atr', 1.5), ('tp_r', 2.0))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-18 00:00:00",
     "dir": "CORTO",
     "entrada": 74.73999786376953,
     "sl": 77.72907694812544,
     "tp": 68.76183969505773,
-    "dist_sl": 2.9890790843559016
+    "dist_sl": 2.9890790843559016,
+    "R": 0.348
   },
   {
     "activo": "BTCUSD",
@@ -796,5 +798,30 @@
     "sl": 67038.04418867927,
     "tp": 59820.88293573109,
     "dist_sl": 2886.8645011792746
+  },
+  {
+    "activo": "XAUUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 2.0,
+      "sentido": "ambos",
+      "ruptura_n": 20,
+      "rsi_nivel": 25,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "ruptura"
+    },
+    "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'ruptura'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 25), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 2.0))",
+    "estado": "abierta",
+    "vela": "2026-11-19 20:00:00",
+    "dir": "CORTO",
+    "entrada": 3608.699951171875,
+    "sl": 3705.193390816333,
+    "tp": 3415.7130718829594,
+    "dist_sl": 96.49343964445778
   }
 ]
