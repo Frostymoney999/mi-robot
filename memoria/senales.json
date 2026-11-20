@@ -791,13 +791,14 @@
       "entrada": "inside"
     },
     "clave": "(('adx_min', 30), ('ema', 20), ('entrada', 'inside'), ('franja', False), ('max_velas', 50), ('orb_hora', 9), ('rsi_nivel', 35), ('ruptura_n', 20), ('sentido', 'ambos'), ('sl_atr', 2.5), ('tp_r', 1.5))",
-    "estado": "abierta",
+    "estado": "cerrada",
     "vela": "2026-11-18 08:00:00",
     "dir": "CORTO",
     "entrada": 64151.1796875,
     "sl": 67038.04418867927,
     "tp": 59820.88293573109,
-    "dist_sl": 2886.8645011792746
+    "dist_sl": 2886.8645011792746,
+    "R": 1.49
   },
   {
     "activo": "XAUUSD",
@@ -823,5 +824,30 @@
     "sl": 3705.193390816333,
     "tp": 3415.7130718829594,
     "dist_sl": 96.49343964445778
+  },
+  {
+    "activo": "EURUSD",
+    "tf": "H4",
+    "params": {
+      "ema": 20,
+      "adx_min": 25,
+      "sl_atr": 2.5,
+      "tp_r": 1.0,
+      "sentido": "cortos",
+      "ruptura_n": 20,
+      "rsi_nivel": 30,
+      "orb_hora": 9,
+      "max_velas": 10,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 25), ('ema', 20), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 10), ('orb_hora', 9), ('rsi_nivel', 30), ('ruptura_n', 20), ('sentido', 'cortos'), ('sl_atr', 2.5), ('tp_r', 1.0))",
+    "estado": "abierta",
+    "vela": "2026-11-20 16:00:00",
+    "dir": "CORTO",
+    "entrada": 1.0973334312438965,
+    "sl": 1.1029579192807015,
+    "tp": 1.0917089432070914,
+    "dist_sl": 0.005624488036805076
   }
 ]
