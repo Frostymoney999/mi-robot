@@ -904,5 +904,30 @@
     "tp": 1.0920623706203085,
     "dist_sl": 0.002632130091628558,
     "R": -1.046
+  },
+  {
+    "activo": "GBPJPY",
+    "tf": "H4",
+    "params": {
+      "ema": 50,
+      "adx_min": 0,
+      "sl_atr": 2.5,
+      "tp_r": 0.5,
+      "sentido": "largos",
+      "ruptura_n": 10,
+      "rsi_nivel": 35,
+      "orb_hora": 15,
+      "max_velas": 100,
+      "franja": false,
+      "entrada": "apoyo"
+    },
+    "clave": "(('adx_min', 0), ('ema', 50), ('entrada', 'apoyo'), ('franja', False), ('max_velas', 100), ('orb_hora', 15), ('rsi_nivel', 35), ('ruptura_n', 10), ('sentido', 'largos'), ('sl_atr', 2.5), ('tp_r', 0.5))",
+    "estado": "abierta",
+    "vela": "2026-11-27 04:00:00",
+    "dir": "LARGO",
+    "entrada": 209.07000732421875,
+    "sl": 207.74440138307799,
+    "tp": 209.73281029478915,
+    "dist_sl": 1.3256059411407686
   }
 ]
